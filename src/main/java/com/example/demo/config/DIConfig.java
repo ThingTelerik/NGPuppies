@@ -8,7 +8,9 @@ import com.example.demo.entities.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class DIConfig {
 
     @Bean(name = "User")
@@ -19,7 +21,7 @@ public class DIConfig {
          return userRepo;
     }
 
-    @Bean
+    @Bean(name = "Role")
     @Autowired
     public GenericRepository<Role> provideRoleGenericRepository(SessionFactory sessionFactory){
         GenericRepository<Role> roleRepo = new HibernateRepository<>(sessionFactory);
