@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -15,12 +16,16 @@ public class User {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    
+
     @Column(name = "phone", nullable =  false)
     private String phone;
 
     @Column(name= "password", nullable = false)
     private String password;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Role.class)
+    private Set<Role> roles;
+
 
     public User(String username, String email, String phone, String password) {
         setUsername(username);
@@ -70,5 +75,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
