@@ -12,7 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,12 +33,36 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return userGenericRepository.getAll();
     }
 
     @Override
     public boolean register(User user) {
-        return false;
+        User userToRegister = new User(user.getUsername(), user.getEmail(), user.getPhone(), user.getPassword());
+
+        List<Role> roles = roleGenericRepository.getAll();
+        List<User> users = userGenericRepository.getAll();
+
+        Role role = roles.stream()
+                .filter(x->x.getName().equalsIgnoreCase("user"))
+                .findFirst()
+                .orElse(null);
+
+        if(role==null){
+            role = new Role();
+            role.setName("user");
+            roleGenericRepository.create(role);
+        }
+        role.getUsers().add(user);
+        user.getRoles().add(role);
+
+        if(users.stream()
+                .anyMatch(x->x.getEmail().equalsIgnoreCase(user.getEmail())|| x.getUsername().equalsIgnoreCase(user.getUsername()))){
+            //TODO
+            throw  new IllegalArgumentException();
+        }
+        userGenericRepository.create(user);
+        return true;
     }
 
     @Override
