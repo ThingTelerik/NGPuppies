@@ -9,6 +9,7 @@ public interface GenericRepository<T> {
 
     T create(T entity);
 
+    void delete(T entity);
 
 
 }
