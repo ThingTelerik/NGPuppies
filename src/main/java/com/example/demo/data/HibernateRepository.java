@@ -39,6 +39,10 @@ public class HibernateRepository<T> implements GenericRepository<T> {
             CriteriaQuery<T> criteriaQuery = builder.createQuery(getEntityClass());
             criteriaQuery.from(getEntityClass());
 
+            entities= session.createQuery(criteriaQuery).getResultList();
+
+            transaction.commit();
+
 
 
         }catch (Exception ex){
@@ -50,11 +54,34 @@ public class HibernateRepository<T> implements GenericRepository<T> {
 
     @Override
     public T getById(int id) {
-        return null;
+        T entity = null;
+        try (Session session = sessionFactory.openSession()){
+            Transaction transaction = session.beginTransaction();
+
+             entity = session.get(getEntityClass(), id);
+
+            transaction.commit();
+
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return entity;
     }
 
     @Override
     public T create(T entity) {
-        return null;
+        try(Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            session.save(entity);
+
+            transaction.commit();
+
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return entity;
     }
 }
