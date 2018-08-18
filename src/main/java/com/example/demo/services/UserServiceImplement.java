@@ -67,7 +67,12 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public User findByUsername(String username) {
-        return null;
+
+        return userGenericRepository.getAll()
+                .stream()
+                .filter(x->x.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
