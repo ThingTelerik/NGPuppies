@@ -69,12 +69,23 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         return true;
     }
 
+
+
     @Override
     public User findByUsername(String username) {
 
         return userGenericRepository.getAll()
                 .stream()
                 .filter(x->x.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userGenericRepository.getAll()
+                .stream()
+                .filter(x->x.getEmail().equals(email))
                 .findFirst()
                 .orElse(null);
     }
