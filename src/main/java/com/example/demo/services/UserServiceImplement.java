@@ -101,4 +101,15 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         return CustomUserDetails.create(user);
 
     }
+
+
+    public UserDetails loadUserById(int id){
+        User user = userGenericRepository.getById(id);
+
+        if(user ==null){
+            throw new IllegalArgumentException("User not found by id");
+        }
+
+        return CustomUserDetails.create(user);
+    }
 }
