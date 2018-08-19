@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
-    private int id;
+    private long id;
     private String username;
 
     private String email;
@@ -42,6 +42,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override

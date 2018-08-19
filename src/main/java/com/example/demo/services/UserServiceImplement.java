@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.data.GenericRepository;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
+import com.example.demo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -97,13 +98,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
                                                                 .map(x-> new SimpleGrantedAuthority("ROLE_"+ x.getName()))
                                                                 .collect(Collectors.toSet());
 
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                granatedAuthorities
-        );
-
-        return userDetails;
+        return CustomUserDetails.create(user);
 
     }
 }
