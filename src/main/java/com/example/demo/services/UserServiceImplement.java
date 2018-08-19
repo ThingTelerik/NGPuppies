@@ -5,15 +5,18 @@ import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.SecondaryTable;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +80,30 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        List<User> allUsers = userGenericRepository.getAll();
+
+        User user = allUsers.stream()
+                .filter(x->x.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
+
+        if(user ==null){
+            throw  new UsernameNotFoundException("User not found");
+
+        }
+
+        Set<Role> roles = user.getRoles();
+        Set<SimpleGrantedAuthority> grnatedAuthorities = roles.stream()
+                                                                .map(x-> new SimpleGrantedAuthority("ROLE_"+ x.getName()))
+                                                                .collect(Collectors.toSet());
+
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                grnatedAuthorities
+        );
+
+        return userDetails;
+
     }
 }
