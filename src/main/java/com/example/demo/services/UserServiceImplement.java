@@ -93,14 +93,14 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         }
 
         Set<Role> roles = user.getRoles();
-        Set<SimpleGrantedAuthority> grnatedAuthorities = roles.stream()
+        Set<SimpleGrantedAuthority> granatedAuthorities = roles.stream()
                                                                 .map(x-> new SimpleGrantedAuthority("ROLE_"+ x.getName()))
                                                                 .collect(Collectors.toSet());
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                grnatedAuthorities
+                granatedAuthorities
         );
 
         return userDetails;
