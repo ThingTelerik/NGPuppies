@@ -27,8 +27,8 @@ public class User {
     private Set<Role> roles;
 
 
-    public User(String username, String email, String phone, String password) {
-        setUsername(username);
+    public User(String name, String email, String phone, String password) {
+        setUsername(name);
         setEmail(email);
         setPhone(phone);
         setPassword(password);

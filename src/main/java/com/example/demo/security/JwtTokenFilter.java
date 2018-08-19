@@ -30,10 +30,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
        try {
 
-           Optional<String> token = getTokenString(request.getHeader(header));
+          String token = getTokenString(request);
 
-           if (StringUtils.hasText(String.valueOf(token)) && jwtTokenProvider.validateToken(String.valueOf(token))) {
-               Integer userId = jwtTokenProvider.getUserIdFromJwt(String.valueOf(token));
+           if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+               Integer userId = jwtTokenProvider.getUserIdFromJwt(token);
 
                UserDetails userDetails = userService.loadUserById(userId);
                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -45,17 +45,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
        }catch (Exception ex){
            System.out.println(ex.getMessage() + "Not able to set user authentication");
        }
-       filterChain.doFilter(request,response);
     }
 
 
-    private Optional<String> getTokenString(String header) {
-        String[] token = header.split(" ");
-        if (token.length < 2) {
-            return Optional.empty();
-        } else {
-            return Optional.ofNullable(token[1]);
-
+    private String getTokenString(HttpServletRequest request) {
+       String bearerToken = request.getHeader(header);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7, bearerToken.length());
         }
+        return null;
     }
 }
