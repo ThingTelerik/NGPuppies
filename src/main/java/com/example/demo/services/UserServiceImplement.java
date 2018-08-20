@@ -22,6 +22,7 @@ import javax.persistence.SecondaryTable;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -80,15 +81,16 @@ public class UserServiceImplement implements UserService, UserDetailsService {
             role.setName("user");
             roleGenericRepository.create(role);
         }
-        role.getUsers().add(userToRegister);
-        userToRegister.getRoles().add(role);
+        //role.getUsers().add(userToRegister);
+        role.setUsers(Collections.singleton(userToRegister));
+        userToRegister.setRoles(Collections.singleton(role));
 
 
-        userGenericRepository.create(userToRegister);
+       User result = userGenericRepository.create(userToRegister);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("api/users/{username}")
-                .buildAndExpand(userToRegister.getUsername()).toUri();
+                .buildAndExpand(result.getUsername()).toUri();
 
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User successfully registered"));

@@ -20,6 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
+    @Autowired
     private  UserService userService;
 
     @Autowired

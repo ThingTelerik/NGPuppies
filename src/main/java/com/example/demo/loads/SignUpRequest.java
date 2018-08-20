@@ -25,7 +25,7 @@ public class SignUpRequest {
     private String phone;
 
     @NotNull
-    @Length(min =7)
+    @Length(min =6)
     private String password;
 
     public String getName() {
