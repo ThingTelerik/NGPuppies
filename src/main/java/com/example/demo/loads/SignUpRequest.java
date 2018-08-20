@@ -21,11 +21,11 @@ public class SignUpRequest {
     private String email;
 
     @NotNull
-    @Length(max =10)
+    @Length(max =12)
     private String phone;
 
     @NotNull
-    @Length(min =6)
+    @Length(min =7)
     private String password;
 
     public String getName() {

@@ -53,7 +53,7 @@ public class HibernateRepository<T> implements GenericRepository<T> {
     }
 
     @Override
-    public T getById(int id) {
+    public T getById(long id) {
         T entity = null;
         try (Session session = sessionFactory.openSession()){
             Transaction transaction = session.beginTransaction();

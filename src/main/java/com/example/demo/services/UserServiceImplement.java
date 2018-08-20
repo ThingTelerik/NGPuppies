@@ -139,7 +139,7 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     }
 
 
-    public UserDetails loadUserById(int id){
+    public UserDetails loadUserById(Long id){
         User user = userGenericRepository.getById(id);
 
         if(user ==null){

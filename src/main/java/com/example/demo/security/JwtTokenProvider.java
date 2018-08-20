@@ -12,16 +12,16 @@ public class JwtTokenProvider {
     @Value("$app.jwtSecret")
     private String jwtSecret;
 
-    @Value("$app.jwtExpirationsInMs")
+    @Value("$app.jwtExpirationInMs")
     private String jwtExpirationInMs;
 
 
     public String generateToken(Authentication authentication){
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getDetails();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         Date dateNow = new Date();
 
-        Date expireDate = new Date(dateNow.getTime() + jwtExpirationInMs);
+        Date expireDate = new Date(dateNow.getTime() + 604800000);
 
         return Jwts.builder()
                 .setSubject(Long.toString(userDetails.getId()))
@@ -32,13 +32,13 @@ public class JwtTokenProvider {
 
     }
 
-    public Integer getUserIdFromJwt(String token){
+    public Long getUserIdFromJwt(String token){
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Integer.parseInt(claims.getSubject());
+        return Long.parseLong(claims.getSubject());
     }
 
     public boolean validateToken(String token){

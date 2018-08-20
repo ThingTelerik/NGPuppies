@@ -7,14 +7,12 @@ import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,7 +20,7 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    private UserService userService;
+    private  UserService userService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -47,14 +45,14 @@ public class AuthenticationController {
 
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest){
+    @PostMapping("/register")
+    public void registerUser(@Valid @RequestBody SignUpRequest signUpRequest){
         try {
-            userService.register(signUpRequest);
+            this.userService.register(signUpRequest);
         }catch (IllegalArgumentException e){
-            return (ResponseEntity<?>) ResponseEntity.badRequest();
+            System.out.println(e.getMessage());
         }
-        return userService.register(signUpRequest);
+
     }
 
 
