@@ -47,12 +47,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public void registerUser(@Valid @RequestBody SignUpRequest signUpRequest){
+    public ResponseEntity<?> register(@Valid @RequestBody SignUpRequest signUpRequest){
+        ResponseEntity<?> result = null;
         try {
-            this.userService.register(signUpRequest);
+           result = userService.register(signUpRequest);
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
         }
+        return result;
 
     }
 
