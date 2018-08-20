@@ -81,7 +81,6 @@ public class UserServiceImplement implements UserService, UserDetailsService {
             role.setName("user");
             roleGenericRepository.create(role);
         }
-        //role.getUsers().add(userToRegister);
         role.setUsers(Collections.singleton(userToRegister));
         userToRegister.setRoles(Collections.singleton(role));
 
