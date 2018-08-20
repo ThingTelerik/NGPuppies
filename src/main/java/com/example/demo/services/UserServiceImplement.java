@@ -3,18 +3,26 @@ package com.example.demo.services;
 import com.example.demo.data.GenericRepository;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
+import com.example.demo.loads.ApiResponse;
+import com.example.demo.loads.SignUpRequest;
+import com.example.demo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.SecondaryTable;
 import javax.transaction.Transactional;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,11 +48,28 @@ public class UserServiceImplement implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean register(User user) {
-        User userToRegister = new User(user.getUsername(), user.getEmail(), user.getPhone(), user.getPassword());
-
+    public ResponseEntity<?> register(SignUpRequest signUpRequest) {
         List<Role> roles = roleGenericRepository.getAll();
         List<User> users = userGenericRepository.getAll();
+
+        if(
+                //findByUsername(signUpRequest.getUsername())
+                users.stream()
+                .anyMatch(user -> user.getUsername().equals(signUpRequest.getUsername()))){
+            return new ResponseEntity<>(new ApiResponse(false, "Username already taken!"),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        if(users.stream()
+                .anyMatch(user -> user.getEmail().equals(signUpRequest.getEmail()))){
+            return new ResponseEntity<>(new ApiResponse(false, "Email already in use!"),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+
+        User userToRegister = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), signUpRequest.getPhone(), signUpRequest.getPassword());
+
+       userToRegister.setPassword(passwordEncoder.encode(userToRegister.getPassword()));
 
         Role role = roles.stream()
                 .filter(x->x.getName().equalsIgnoreCase("user"))
@@ -56,17 +81,22 @@ public class UserServiceImplement implements UserService, UserDetailsService {
             role.setName("user");
             roleGenericRepository.create(role);
         }
-        role.getUsers().add(user);
-        user.getRoles().add(role);
+        //role.getUsers().add(userToRegister);
+        role.setUsers(Collections.singleton(userToRegister));
+        userToRegister.setRoles(Collections.singleton(role));
 
-        if(users.stream()
-                .anyMatch(x->x.getEmail().equalsIgnoreCase(user.getEmail())|| x.getUsername().equalsIgnoreCase(user.getUsername()))){
-            //TODO
-            throw  new IllegalArgumentException();
-        }
-        userGenericRepository.create(user);
-        return true;
+
+       User result = userGenericRepository.create(userToRegister);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("api/users/{username}")
+                .buildAndExpand(result.getUsername()).toUri();
+
+
+        return ResponseEntity.created(location).body(new ApiResponse(true, "User successfully registered"));
     }
+
+
 
     @Override
     public User findByUsername(String username) {
@@ -74,6 +104,15 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         return userGenericRepository.getAll()
                 .stream()
                 .filter(x->x.getUsername().equals(username))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userGenericRepository.getAll()
+                .stream()
+                .filter(x->x.getEmail().equals(email))
                 .findFirst()
                 .orElse(null);
     }
@@ -93,17 +132,22 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         }
 
         Set<Role> roles = user.getRoles();
-        Set<SimpleGrantedAuthority> grnatedAuthorities = roles.stream()
+        Set<SimpleGrantedAuthority> granatedAuthorities = roles.stream()
                                                                 .map(x-> new SimpleGrantedAuthority("ROLE_"+ x.getName()))
                                                                 .collect(Collectors.toSet());
 
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                grnatedAuthorities
-        );
+        return CustomUserDetails.create(user);
 
-        return userDetails;
+    }
 
+
+    public UserDetails loadUserById(Long id){
+        User user = userGenericRepository.getById(id);
+
+        if(user ==null){
+            throw new IllegalArgumentException("User not found by id");
+        }
+
+        return CustomUserDetails.create(user);
     }
 }

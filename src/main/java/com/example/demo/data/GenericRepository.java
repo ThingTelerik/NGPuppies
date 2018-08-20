@@ -6,7 +6,7 @@ public interface GenericRepository<T> {
     void setEntityClass(Class<T> entityClass);
     List<T> getAll();
 
-    T getById(int id);
+    T getById(long id);
 
     T create(T entity);
 
