@@ -10,7 +10,7 @@ public class Bill {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
    @Enumerated
    @NotNull
@@ -33,19 +33,25 @@ public class Bill {
    @Column(name = "currency")
     private  Currency currency;
 
+   @NotNull
+   @ManyToOne
+   @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
+   private Subscriber subscriber;
+
 
     public Bill() {
     }
 
-    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency) {
+    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency, Subscriber subscriber) {
         setService(service);
         setStartDate(startDate);
         setEndDate(endDate);
         setAmount(amount);
         setCurrency(currency);
+        setSubscriber(subscriber);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -91,5 +97,13 @@ public class Bill {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public Subscriber getSubscriber() {
+        return subscriber;
+    }
+
+    public void setSubscriber(Subscriber subscriber) {
+        this.subscriber = subscriber;
     }
 }

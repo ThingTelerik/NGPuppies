@@ -9,7 +9,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -24,7 +24,7 @@ public class Role {
         this.users = users;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
