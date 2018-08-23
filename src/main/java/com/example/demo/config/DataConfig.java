@@ -1,11 +1,13 @@
 package com.example.demo.config;
 
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
 import com.example.demo.data.HibernateUtils;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -63,7 +65,9 @@ public class DataConfig {
     private Properties jpaProperties() {
         Properties properties = new Properties();
 
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLMyISAMDialect");  // MySQL5InnoDBDialect   MySQLMyISAMDialect
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLMyISAMDialect");
+        properties.put(AvailableSettings.JDBC_TIME_ZONE,
+                TimeZone.getTimeZone( "UTC" ));// MySQL5InnoDBDialect   MySQLMyISAMDialect
         properties.put("hibernate.show_sql", "true");
         return properties;
     }
