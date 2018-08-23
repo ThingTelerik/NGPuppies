@@ -10,6 +10,6 @@ public class Subscriber {
     private int id;
 
 
-//    @OneToMany(mappedBy = "subscriber", fetch = FetchType.EAGER)
-//    private Set<Bill> bills;
+    @OneToMany(mappedBy = "subscriber", fetch = FetchType.EAGER)
+    private Set<Bill> bills;
 }
