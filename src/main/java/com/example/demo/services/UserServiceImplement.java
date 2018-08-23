@@ -103,6 +103,10 @@ public class UserServiceImplement implements UserDetailsService {
         }
         Role role = user.getRole();
 
+<<<<<<< HEAD
+        Role role = user.getRole();
+=======
+>>>>>>> master
         Set<SimpleGrantedAuthority> granatedAuthorities =  Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.getName()));
 
         return CustomUserDetails.create(user);
