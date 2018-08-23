@@ -39,7 +39,6 @@ dependencies {
     compile 'javax.xml.bind:jaxb-api:2.2.x'
     compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
     compile 'org.hibernate:hibernate-commons-annotations:4.0.1.Final'
-    compile 'org.hibernate:hibernate-core-5.1.0.Final'
     compile 'org.hibernate:hibernate-validator-5.2.4.Final'
     compile 'org.hibernate:hibernate-jpa-2.0-api-1.0.1.Final'
 
