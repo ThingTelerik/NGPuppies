@@ -9,12 +9,12 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role() {
@@ -24,7 +24,7 @@ public class Role {
         this.users = users;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

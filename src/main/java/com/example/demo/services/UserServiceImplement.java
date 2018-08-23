@@ -1,13 +1,13 @@
 package com.example.demo.services;
 
-import com.example.demo.data.GenericRepository;
+import com.example.demo.data.RoleRepository;
+import com.example.demo.data.UserRepository;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.loads.ApiResponse;
 import com.example.demo.loads.SignUpRequest;
 import com.example.demo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,39 +18,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.SecondaryTable;
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Transactional
-public class UserServiceImplement implements UserService, UserDetailsService {
+public class UserServiceImplement implements UserDetailsService {
     private static final String INVALID_USER = "Invalid user";
-    private PasswordEncoder passwordEncoder;
-    private final GenericRepository<User> userGenericRepository;
-    private final  GenericRepository<Role> roleGenericRepository;
 
     @Autowired
-    public UserServiceImplement(PasswordEncoder passwordEncoder, @Qualifier("User") GenericRepository<User> userGenericRepository, @Qualifier("Role") GenericRepository<Role> roleGenericRepository) {
-        this.passwordEncoder = passwordEncoder;
-        this.userGenericRepository = userGenericRepository;
-        this.roleGenericRepository = roleGenericRepository;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private  UserRepository userRepository;
+
+    @Autowired
+    private  RoleRepository roleRepository;
+
+    public UserServiceImplement() {
     }
 
-    @Override
-    public List<User> findAll() {
-        return userGenericRepository.getAll();
-    }
-
-    @Override
     public ResponseEntity<?> register(SignUpRequest signUpRequest) {
-        List<Role> roles = roleGenericRepository.getAll();
-        List<User> users = userGenericRepository.getAll();
+        List<Role> roles = roleRepository.findAll();
+        List<User> users = userRepository.findAll();
 
         if(
                 //findByUsername(signUpRequest.getUsername())
@@ -79,13 +70,13 @@ public class UserServiceImplement implements UserService, UserDetailsService {
         if(role==null){
             role = new Role();
             role.setName("user");
-            roleGenericRepository.create(role);
+            roleRepository.save(role);
         }
         role.setUsers(Collections.singleton(userToRegister));
-        userToRegister.setRoles(Collections.singleton(role));
+        userToRegister.setRole(role);
 
 
-       User result = userGenericRepository.create(userToRegister);
+       User result = userRepository.save(userToRegister);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("api/users/{username}")
@@ -98,27 +89,8 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
 
     @Override
-    public User findByUsername(String username) {
-
-        return userGenericRepository.getAll()
-                .stream()
-                .filter(x->x.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userGenericRepository.getAll()
-                .stream()
-                .filter(x->x.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<User> allUsers = userGenericRepository.getAll();
+        List<User> allUsers = userRepository.findAll();
 
         User user = allUsers.stream()
                 .filter(x->x.getUsername().equals(username))
@@ -130,10 +102,8 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
         }
 
-        Set<Role> roles = user.getRoles();
-        Set<SimpleGrantedAuthority> granatedAuthorities = roles.stream()
-                                                                .map(x-> new SimpleGrantedAuthority("ROLE_"+ x.getName()))
-                                                                .collect(Collectors.toSet());
+        Set<SimpleGrantedAuthority> role = (Set<SimpleGrantedAuthority>) user.getRole();
+        Set<SimpleGrantedAuthority> granatedAuthorities = role;
 
         return CustomUserDetails.create(user);
 
@@ -141,7 +111,10 @@ public class UserServiceImplement implements UserService, UserDetailsService {
 
 
     public UserDetails loadUserById(Long id){
-        User user = userGenericRepository.getById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(
+                        NoSuchElementException::new
+                );
 
         if(user ==null){
             throw new IllegalArgumentException("User not found by id");

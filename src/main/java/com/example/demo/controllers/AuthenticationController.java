@@ -5,6 +5,7 @@ import com.example.demo.loads.LoginRequest;
 import com.example.demo.loads.SignUpRequest;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.services.UserService;
+import com.example.demo.services.UserServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 public class AuthenticationController {
 
     @Autowired
-    private  UserService userService;
+    private UserServiceImplement userService;
 
     @Autowired
     AuthenticationManager authenticationManager;

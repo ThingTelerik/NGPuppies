@@ -9,7 +9,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private  int id;
+    private  long id;
 
     @Column(name = "username", nullable =  false, unique = true)
     private String username;
@@ -23,8 +23,9 @@ public class User {
     @Column(name= "password", nullable = false)
     private String password;
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Role.class)
-    private Set<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
 
 
     public User(String name, String email, String phone, String password) {
@@ -37,7 +38,7 @@ public class User {
     public User() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -77,11 +78,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
