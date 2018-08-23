@@ -101,8 +101,12 @@ public class UserServiceImplement implements UserDetailsService {
             throw  new UsernameNotFoundException("User not found");
 
         }
-
         Role role = user.getRole();
+
+<<<<<<< HEAD
+        Role role = user.getRole();
+=======
+>>>>>>> master
         Set<SimpleGrantedAuthority> granatedAuthorities =  Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.getName()));
 
         return CustomUserDetails.create(user);
