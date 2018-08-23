@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import com.example.demo.services.UserServiceImplement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -9,15 +11,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import sun.plugin.liveconnect.SecurityContextHelper;
 
+import javax.persistence.EntityManagerFactory;
 import java.net.Authenticator;
 
 @Configuration
 public class BeanConfiguration {
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
+
+
 
     @Bean
     public String getLoggedUser(){

@@ -33,22 +33,22 @@ public class Bill {
    @Column(name = "currency")
     private  Currency currency;
 
-   @NotNull
-   @ManyToOne
-   @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
-   private Subscriber subscriber;
+//   @NotNull
+//   @ManyToOne
+//   @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
+//   private Subscriber subscriber;
 
 
     public Bill() {
     }
 
-    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency, Subscriber subscriber) {
+    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency) {
         setService(service);
         setStartDate(startDate);
         setEndDate(endDate);
         setAmount(amount);
         setCurrency(currency);
-        setSubscriber(subscriber);
+        //setSubscriber(subscriber);
     }
 
     public long getId() {
@@ -99,11 +99,11 @@ public class Bill {
         this.currency = currency;
     }
 
-    public Subscriber getSubscriber() {
-        return subscriber;
-    }
-
-    public void setSubscriber(Subscriber subscriber) {
-        this.subscriber = subscriber;
-    }
+//    public Subscriber getSubscriber() {
+//        return subscriber;
+//    }
+//
+//    public void setSubscriber(Subscriber subscriber) {
+//        this.subscriber = subscriber;
+//    }
 }
