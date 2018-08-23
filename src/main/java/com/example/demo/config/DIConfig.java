@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.data.GenericRepository;
-import com.example.demo.data.HibernateRepository;
+
 import com.example.demo.data.HibernateUtils;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
