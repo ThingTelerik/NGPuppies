@@ -30,7 +30,7 @@ public class Subscriber {
 
     private String address;
     @ManyToOne
-            @JoinColumn (name = "bank_id", referencedColumnName = "id")
+    @JoinColumn (name = "bank_id", referencedColumnName = "id")
     private User subscribersBank;
 
     public Subscriber(){
@@ -89,7 +89,4 @@ public class Subscriber {
         return subscribersBank;
     }
 
-    public void setSubscribersBank(User subscribersBank) {
-        this.subscribersBank = subscribersBank;
-    }
 }
