@@ -1,12 +1,4 @@
 package com.example.demo.config;
-
-
-import com.example.demo.data.HibernateUtils;
-import com.example.demo.entities.Role;
-import com.example.demo.entities.User;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
