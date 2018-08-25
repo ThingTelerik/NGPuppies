@@ -18,6 +18,6 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     @Override
     List<Bill> findAll();
 
-   // @Query("Select b from bills b where b.subscriber.id = subscriberId")
-     //List<Bill> findBySubscriber(@Param("subscriberId")  Long subscriberId);
+    @Query("Select b from Bill b where b.subscriber.id = ?1")
+     List<Bill> findBySubscriber( Long subscriberId);
 }

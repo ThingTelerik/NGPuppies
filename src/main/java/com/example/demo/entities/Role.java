@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -12,12 +13,18 @@ public class Role {
     private long id;
 
     @Column(name = "name")
-    private String name;
+    @NotNull
+    @Enumerated()
+    private RoleType roleType;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role() {
+    }
+
+    public Role(@NotNull RoleType roleType) {
+        setRoleType(roleType);
     }
 
     public Role(Set<User> users) {
@@ -32,12 +39,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public RoleType getRoleType() {
+        return roleType;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
     }
 
     public Set<User> getUsers() {

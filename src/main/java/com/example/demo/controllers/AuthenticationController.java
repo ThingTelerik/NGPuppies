@@ -52,7 +52,7 @@ public class AuthenticationController {
     public ResponseEntity<?> register(@Valid @RequestBody SignUpRequest signUpRequest){
         ResponseEntity<?> result = null;
         try {
-           result = userService.register(signUpRequest);
+          // result = userService.register(signUpRequest);
         }catch (IllegalArgumentException e){
             System.out.println(e.getMessage());
         }

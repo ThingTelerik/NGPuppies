@@ -12,27 +12,24 @@ public class CustomUserDetails implements UserDetails {
     private long id;
     private String username;
 
-    private String email;
 
     private String password;
 
     private Collection<?extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(long id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
-        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
     public static CustomUserDetails create(User user){
 
-        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getName()));
+        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getRoleType().name()));
 
         return new CustomUserDetails(user.getId(),
                 user.getUsername(),
-                user.getEmail(),
                 user.getPassword(),
                 authorities);
     }

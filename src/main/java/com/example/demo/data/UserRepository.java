@@ -19,4 +19,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long aLong);
 
      Optional<User> findByUsername(String username);
+
+//    @Override
+//    List<T> findAll();
+//
+//
+//    Optional<T> findById(Long aLong);
+//
+//    Optional<T> findByUsername(String username);
+//
+//    @Override
+//    <S extends T> S save(S entity);
 }
