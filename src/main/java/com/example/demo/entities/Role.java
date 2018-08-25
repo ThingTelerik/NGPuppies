@@ -14,7 +14,7 @@ public class Role {
 
     @Column(name = "name")
     @NotNull
-    @Enumerated()
+    @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)

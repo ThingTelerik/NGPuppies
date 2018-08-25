@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("ADMIN")
 public class Admin  extends User{
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     public Admin() {

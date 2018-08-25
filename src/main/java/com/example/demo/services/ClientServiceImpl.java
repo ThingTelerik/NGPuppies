@@ -4,6 +4,7 @@ import com.example.demo.data.ClientRepository;
 import com.example.demo.data.RoleRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.User;
+import com.example.demo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,10 +14,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
-public class ClientServiceImpl implements ClientService, GenericService<Client> {
+public class ClientServiceImpl implements ClientService, GenericService<Client>,UserDetailsService {
 
     private static final String INVALID_USER = "Invalid user";
 
@@ -55,4 +57,19 @@ public class ClientServiceImpl implements ClientService, GenericService<Client> 
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
+
+    public UserDetails loadUserById(Long id){
+        Client client = clientRepository.findClientById(id);
+
+
+        if(client ==null){
+            throw new IllegalArgumentException("User not found by id");
+        }
+
+        return CustomUserDetails.create(client);
+    }
 }

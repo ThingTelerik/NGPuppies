@@ -16,6 +16,10 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
    @Query("SELECT r from Role r where r.roleType = ?1")
    Role findByName (RoleType roleName);
 
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Role r WHERE r.roleType= ?1")
+    Boolean existsByRoleType(RoleType roleType);
+
+
     @Override
     List<Role> findAll();
 

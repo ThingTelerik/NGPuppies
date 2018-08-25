@@ -7,14 +7,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public interface ClientRepository extends JpaRepository<Client, Long> {
     @Override
     List<Client> findAll();
 
+    @Query("Select c from Client c where c.id = ?1")
+    Client findClientById(Long aLong);
+
     @Query("Select c from Client c where c.EIK = ?1")
     Client findByEik(String eik);
+
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Client c WHERE c.username = ?1")
+    Boolean existsByEik(String eik);
+
 
     @Override
     void delete(Client entity);

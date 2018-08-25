@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 
+import com.example.demo.services.ClientServiceImpl;
 import com.example.demo.services.UserServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
      private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    UserServiceImplement userService;
+    ClientServiceImpl clientService;
 
     private static final String header  = "Authorization";
     @Override
@@ -35,11 +36,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
                Long userId = jwtTokenProvider.getUserIdFromJwt(token);
 
-              // UserDetails userDetails = userService.loadUserById(userId);
-            //   UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-               //authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+               UserDetails userDetails = clientService.loadUserById(userId);
+               UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+               authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-             //  SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+               SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
            }
        }catch (Exception ex){
