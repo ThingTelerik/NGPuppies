@@ -10,5 +10,11 @@ public interface GenericService<T> {
 
     T create(T entity);
 
+    void delete(T entity);
+
+    void update(T entity, String param);
+
+
+
 
 }

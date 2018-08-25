@@ -30,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-    @Autowired
-    private UserServiceImplement userService;
+   // @Autowired
+   // private UserServiceImplement userService;
 
 
     @Bean
@@ -41,12 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userService)
-                .passwordEncoder(getPasswordEncoder());
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth
+//                .userDetailsService(userService)
+//                .passwordEncoder(getPasswordEncoder());
+//    }
 
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

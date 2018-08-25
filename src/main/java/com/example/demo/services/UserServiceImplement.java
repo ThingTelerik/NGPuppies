@@ -1,38 +1,19 @@
 package com.example.demo.services;
 
 import com.example.demo.data.RoleRepository;
-import com.example.demo.data.UserRepository;
-import com.example.demo.entities.Role;
-import com.example.demo.entities.User;
-import com.example.demo.loads.ApiResponse;
-import com.example.demo.loads.SignUpRequest;
-import com.example.demo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import java.net.URI;
-import java.util.*;
 
 @Service
 @Transactional
-public class UserServiceImplement implements UserDetailsService {
+public class UserServiceImplement  {
     private static final String INVALID_USER = "Invalid user";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private  UserRepository userRepository;
-
     @Autowired
     private  RoleRepository roleRepository;
 
@@ -87,27 +68,27 @@ public class UserServiceImplement implements UserDetailsService {
 
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<User> allUsers = userRepository.findAll();
-
-        User user = allUsers.stream()
-                .filter(x->x.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
-
-        if(user ==null){
-            throw  new UsernameNotFoundException("User not found");
-
-        }
-
-        Role role = user.getRole();
-
-        ///Set<SimpleGrantedAuthority> granatedAuthorities =  Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-
-        return CustomUserDetails.create(user);
-
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        List<User> allUsers = userRepository.findAll();
+//
+//        User user = allUsers.stream()
+//                .filter(x->x.getUsername().equals(username))
+//                .findFirst()
+//                .orElse(null);
+//
+//        if(user ==null){
+//            throw  new UsernameNotFoundException("User not found");
+//
+//        }
+//
+//        Role role = user.getRole();
+//
+//        ///Set<SimpleGrantedAuthority> granatedAuthorities =  Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+//
+//        return CustomUserDetails.create(user);
+//
+//    }
 
 //    public UserDetails loadUserById(Long id){
 ////        User user = userRepository.findById(id)
