@@ -21,6 +21,16 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
     }
 
     @Override
+    public Boolean existsByEmail(String email) {
+       return adminRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return adminRepository.existsByUsername(username);
+    }
+
+    @Override
     public List<Admin> getAll() {
         return adminRepository.findAll();
     }

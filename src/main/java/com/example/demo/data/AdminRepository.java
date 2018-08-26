@@ -20,6 +20,12 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     @Query("Select a from Admin a where a.username = ?1")
     Admin findByUserName(String username);
 
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Admin a WHERE a.email = ?1")
+    Boolean existsByEmail(String email);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Admin a WHERE a.username = ?1")
+    Boolean existsByUsername(String username);
+
     @Override
     void delete(Admin entity);
 
