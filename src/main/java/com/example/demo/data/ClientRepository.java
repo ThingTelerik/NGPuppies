@@ -17,11 +17,17 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("Select c from Client c where c.id = ?1")
     Client findClientById(Long aLong);
 
+    @Query("Select c from Client c where c.username = ?1")
+    Client findClientByUsername(String username);
+
     @Query("Select c from Client c where c.EIK = ?1")
     Client findByEik(String eik);
 
-    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Client c WHERE c.username = ?1")
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Client c WHERE c.EIK = ?1")
     Boolean existsByEik(String eik);
+
+    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Client c WHERE c.username = ?1")
+    Boolean existsByUsername(String username);
 
 
     @Override

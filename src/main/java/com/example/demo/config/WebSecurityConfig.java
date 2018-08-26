@@ -4,8 +4,7 @@ package com.example.demo.config;
 import com.example.demo.security.JwtTokenFilter;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.security.MyJwtAuthenticationEntryPoint;
-import com.example.demo.services.ClientService;
-import com.example.demo.services.UserServiceImplement;
+import com.example.demo.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    private ClientService clientService;
+    private MyUserDetailsService userService;
 
 
     @Bean
@@ -42,12 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .userDetailsService(clientService)
-//                .passwordEncoder(getPasswordEncoder());
-//    }
+    @Autowired
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userService)
+                .passwordEncoder(getPasswordEncoder());
+    }
 
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

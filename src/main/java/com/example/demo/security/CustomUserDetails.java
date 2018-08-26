@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import com.example.demo.entities.Client;
 import com.example.demo.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +27,7 @@ public class CustomUserDetails implements UserDetails {
 
     public static CustomUserDetails create(User user){
 
-        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getRoleType().name()));
+        Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(user.getRole().getRoleType().toString()));
 
         return new CustomUserDetails(user.getId(),
                 user.getUsername(),

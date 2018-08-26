@@ -1,8 +1,7 @@
 package com.example.demo.security;
 
 
-import com.example.demo.services.ClientServiceImpl;
-import com.example.demo.services.UserServiceImplement;
+import com.example.demo.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
@@ -24,7 +22,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
      private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    ClientServiceImpl clientService;
+    MyUserDetailsService userService;
 
     private static final String header  = "Authorization";
     @Override
@@ -36,7 +34,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
                Long userId = jwtTokenProvider.getUserIdFromJwt(token);
 
-               UserDetails userDetails = clientService.loadUserById(userId);
+               UserDetails userDetails = userService.loadUserById(userId);
                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
@@ -58,4 +56,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+
 }

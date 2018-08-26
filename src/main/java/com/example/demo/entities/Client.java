@@ -11,6 +11,10 @@ public class Client extends User {
     @Column(name = "Eik", unique = true)
     private String EIK;
 
+
+    public Client() {
+    }
+
     public Client(String name, String password, String EIK) {
         super(name, password,RoleType.ROLE_CLIENT);
         setEIK(EIK);
