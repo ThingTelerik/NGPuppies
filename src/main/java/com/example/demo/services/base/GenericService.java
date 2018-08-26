@@ -1,7 +1,4 @@
-package com.example.demo.services;
-
-import com.example.demo.entities.Client;
-import com.example.demo.entities.User;
+package com.example.demo.services.base;
 
 import java.util.List;
 

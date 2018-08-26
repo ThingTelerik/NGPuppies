@@ -34,7 +34,7 @@ public class Subscriber {
     @JoinColumn (name = "bank_id", referencedColumnName = "id")
     private User subscribersBank;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "services_subscribers",
             joinColumns = @JoinColumn(name = "subscriber_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))

@@ -3,6 +3,8 @@ package com.example.demo.services;
 import com.example.demo.data.RoleRepository;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
+import com.example.demo.services.base.GenericService;
+import com.example.demo.services.base.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RoleServiceImpl implements GenericService<Role, RoleType>, RoleService{
+public class RoleServiceImpl implements GenericService<Role, RoleType>, RoleService {
 
     @Autowired
     private RoleRepository roleRepository;

@@ -2,6 +2,8 @@ package com.example.demo.services;
 
 import com.example.demo.data.AdminRepository;
 import com.example.demo.entities.Admin;
+import com.example.demo.services.base.AdminService;
+import com.example.demo.services.base.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

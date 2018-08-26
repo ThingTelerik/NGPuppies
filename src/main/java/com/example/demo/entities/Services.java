@@ -19,7 +19,7 @@ public class Services {
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER)
     private Set<Bill> bills;
 
-    @ManyToMany(mappedBy = "services", fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Subscriber.class)
+    @ManyToMany(mappedBy = "services", cascade = CascadeType.ALL, targetEntity = Subscriber.class)
     private Set<Subscriber> subscribers;
 
     public Services() {

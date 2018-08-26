@@ -1,14 +1,16 @@
 package com.example.demo.controllers;
 
+import com.example.demo.data.UserRepository;
 import com.example.demo.entities.Admin;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
+import com.example.demo.entities.User;
 import com.example.demo.loads.*;
 import com.example.demo.security.JwtTokenProvider;
-import com.example.demo.services.AdminService;
 import com.example.demo.services.AdminServiceImpl;
-import com.example.demo.services.RoleService;
 import com.example.demo.services.RoleServiceImpl;
+import com.example.demo.services.UserServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +19,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/auth/admin")
@@ -44,6 +45,9 @@ public class AdminController {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
@@ -100,6 +104,18 @@ public class AdminController {
                 .buildAndExpand(saveAdmin.getUsername()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));
+    }
+
+    @GetMapping( value = "all")
+    public ResponseEntity<List<User>> getAllArticles() {
+        List<User> responseUserList = new ArrayList<>();
+        List<User> usersList = userService.getAll();
+        for (int i = 0; i < usersList.size(); i++) {
+           User user = new User();
+            BeanUtils.copyProperties(usersList.get(i),user);
+            responseUserList.add(user);
+        }
+        return new ResponseEntity<List<User>>(responseUserList, HttpStatus.OK);
     }
 
 

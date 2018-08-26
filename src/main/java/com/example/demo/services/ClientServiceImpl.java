@@ -1,26 +1,14 @@
 package com.example.demo.services;
 
 import com.example.demo.data.ClientRepository;
-import com.example.demo.data.RoleRepository;
-import com.example.demo.data.UserRepository;
 import com.example.demo.entities.Client;
-import com.example.demo.entities.Role;
-import com.example.demo.entities.RoleType;
-import com.example.demo.entities.User;
-import com.example.demo.security.CustomUserDetails;
+import com.example.demo.services.base.ClientService;
+import com.example.demo.services.base.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Service
 @Transactional
