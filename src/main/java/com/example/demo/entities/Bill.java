@@ -5,47 +5,48 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity
-@Table(name = "bills",uniqueConstraints = {
+@Table(name = "bills", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "subscriber_id"})
 })
 public class Bill {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-   @Enumerated
-   @NotNull
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "service_id", referencedColumnName = "id")
     private Services service;
 
-   @NotNull
-   @Column(name = "startDate")
+    @NotNull
+    @Column(name = "startDate")
     private Instant startDate;
 
-   @NotNull
-   @Column(name = "endDate")
+    @NotNull
+    @Column(name = "endDate")
     private Instant endDate;
 
-   @NotNull
-   @Column(name = "amount")
+    @NotNull
+    @Column(name = "amount")
     private double amount;
 
-   @Enumerated
-   @NotNull
-   @Column(name = "currency")
-    private  Currency currency;
+    @Enumerated
+    @NotNull
+    @Column(name = "currency")
+    private Currency currency;
 
-   @NotNull
-   @ManyToOne
-   @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
-   private Subscriber subscriber;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
+    private Subscriber subscriber;
 
 
     public Bill() {
     }
 
-    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency,Subscriber subscriber) {
+    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency, Subscriber subscriber) {
         setService(service);
         setStartDate(startDate);
         setEndDate(endDate);

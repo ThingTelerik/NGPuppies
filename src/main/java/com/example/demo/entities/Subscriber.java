@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
 @Table(name = "subscribers")
@@ -32,6 +33,12 @@ public class Subscriber {
     @ManyToOne
     @JoinColumn (name = "bank_id", referencedColumnName = "id")
     private User subscribersBank;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "services_subscribers",
+            joinColumns = @JoinColumn(name = "subscriber_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
+    private Set<Services> services;
 
     public Subscriber(){
 
@@ -89,4 +96,15 @@ public class Subscriber {
         return subscribersBank;
     }
 
+    public void setSubscribersBank(User subscribersBank) {
+        this.subscribersBank = subscribersBank;
+    }
+
+    public Set<Services> getServices() {
+        return services;
+    }
+
+    public void setServices(Set<Services> services) {
+        this.services = services;
+    }
 }
