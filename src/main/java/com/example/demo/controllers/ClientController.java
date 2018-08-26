@@ -97,19 +97,22 @@ public class ClientController {
         client.setPassword(passwordEncoder.encode(client.getPassword()));
 
 
-        RoleType clientRole = client.getRole().getRoleType();
+       // RoleType clientRole = client.getRole().getRoleType();
 
-        Role role = new Role(clientRole);
+        Role role = roleRepository.findAll().stream()
+                .filter(x->x.getRoleType().equals(RoleType.ROLE_CLIENT))
+                .findFirst()
+                .orElse(null);
 
-        role.setUsers(Collections.singleton(client));
-
-        if(!(roleRepository.existsByRoleType(clientRole))){
+        if (role == null) {
+            role = new Role(RoleType.ROLE_CLIENT);
             roleRepository.save(role);
         }
 
+        role.getUsers().add(client);
+        client.setRole(role);
 
         Client savedClient = clientRepository.save(client);
-        userRepository.save(client);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/clients/ {username}")

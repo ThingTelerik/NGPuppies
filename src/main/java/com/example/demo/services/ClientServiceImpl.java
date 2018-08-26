@@ -24,7 +24,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class ClientServiceImpl implements ClientService, GenericService<Client>,UserDetailsService {
+public class ClientServiceImpl implements ClientService, GenericService<Client> {
 
     private static final String INVALID_USER = "Invalid user";
 
@@ -63,34 +63,4 @@ public class ClientServiceImpl implements ClientService, GenericService<Client>,
     clientRepository.updateClientByEik(entity, eik);
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Client client = clientRepository.findClientByUsername(username);
-
-        if(client ==null){
-            throw  new UsernameNotFoundException("User not found");
-
-        }
-
-        Role role = client.getRole();
-
-        Set<SimpleGrantedAuthority> grantedAuthorities =  Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
-
-
-        return CustomUserDetails.create(client);
-
-    }
-
-    public UserDetails loadUserById(Long id){
-        Client client = clientRepository.findClientById(id);
-
-
-        if(client ==null){
-            throw new IllegalArgumentException("User not found by id");
-        }
-
-        return CustomUserDetails.create(client);
-    }
 }
