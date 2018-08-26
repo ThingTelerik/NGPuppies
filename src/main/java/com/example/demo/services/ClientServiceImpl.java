@@ -24,23 +24,33 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class ClientServiceImpl implements ClientService, GenericService<Client> {
+public class ClientServiceImpl implements ClientService, GenericService<Client, String> {
 
     private static final String INVALID_USER = "Invalid user";
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ClientRepository clientRepository;
 
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Override
     public Client getClientByEik(String eik) {
         return clientRepository.findByEik(eik);
+    }
+
+    @Override
+    public Boolean existsByEik(String eik) {
+        return clientRepository.existsByEik(eik);
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return clientRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Client getClientByUsername(String username) {
+        return clientRepository.findClientByUsername(username);
     }
 
     @Override

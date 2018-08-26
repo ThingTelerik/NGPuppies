@@ -37,11 +37,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
         }
 
-        Role role = user.getRole();
-
-        Set<SimpleGrantedAuthority> grantedAuthorities =  Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
-
-
         return CustomUserDetails.create(user);
 
     }
