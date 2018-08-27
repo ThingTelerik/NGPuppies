@@ -1,13 +1,10 @@
 package com.example.demo.controllers;
 
-import com.example.demo.data.UserRepository;
-import com.example.demo.entities.Admin;
-import com.example.demo.entities.Role;
-import com.example.demo.entities.RoleType;
-import com.example.demo.entities.User;
+import com.example.demo.entities.*;
 import com.example.demo.loads.*;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.services.AdminServiceImpl;
+import com.example.demo.services.ClientServiceImpl;
 import com.example.demo.services.RoleServiceImpl;
 import com.example.demo.services.UserServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -32,10 +29,13 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-     private AdminServiceImpl adminService;
+    private AdminServiceImpl adminService;
 
     @Autowired
     private RoleServiceImpl roleService;
+
+    @Autowired
+    ClientServiceImpl clientService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -54,7 +54,7 @@ public class AdminController {
 
 
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), loginRequest.getPassword());
+                loginRequest.getUsername(), loginRequest.getPassword());
 
 
         Authentication authentication = authenticationManager.authenticate(authRequest);
@@ -68,13 +68,13 @@ public class AdminController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerAdmin(@Valid @RequestBody SignupAdminRequest signUpAdminRequest){
-        if(adminService.existsByEmail(signUpAdminRequest.getEmail())){
+    public ResponseEntity<?> registerAdmin(@Valid @RequestBody SignupAdminRequest signUpAdminRequest) {
+        if (adminService.existsByEmail(signUpAdminRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(adminService.existsByUsername(signUpAdminRequest.getUsername())){
+        if (adminService.existsByUsername(signUpAdminRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already used!"),
                     HttpStatus.BAD_REQUEST);
         }
@@ -85,7 +85,7 @@ public class AdminController {
 
 
         Role role = roleService.getAll().stream()
-                .filter(x->x.getRoleType().equals(RoleType.ROLE_ADMIN))
+                .filter(x -> x.getRoleType().equals(RoleType.ROLE_ADMIN))
                 .findFirst()
                 .orElse(null);
 
@@ -106,16 +106,41 @@ public class AdminController {
         return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));
     }
 
-    @GetMapping( value = "all")
+    @GetMapping(value = "all")
     public ResponseEntity<List<User>> getAllArticles() {
         List<User> responseUserList = new ArrayList<>();
         List<User> usersList = userService.getAll();
         for (int i = 0; i < usersList.size(); i++) {
-           User user = new User();
-            BeanUtils.copyProperties(usersList.get(i),user);
+            User user = new User();
+            BeanUtils.copyProperties(usersList.get(i), user);
             responseUserList.add(user);
         }
         return new ResponseEntity<List<User>>(responseUserList, HttpStatus.OK);
+    }
+
+    //Does not work
+    //Transient instance bullshit -> cascade type to fix
+    @PutMapping(value = "updateClientEik")
+    public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+
+
+        clientService.update(client, client.getEIK());
+
+        Client result = new Client();
+        BeanUtils.copyProperties(client, result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //curl http://localhost:8080/api/auth/admin/deleteClient/{username)
+    //needs better implementation maybe
+    @DeleteMapping("/deleteClient/{username}")
+    public ResponseEntity deleteClient(@PathVariable("username") String username) {
+        if(clientService.existsByUsername(username)){
+            clientService.deleteUserByUsername(username);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+
     }
 
 

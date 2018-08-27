@@ -10,6 +10,7 @@ public interface ClientService {
 
     Boolean existsByUsername(String username);
 
+    void deleteUserByUsername(String username);
 
     Client getClientByUsername(String username);
 }

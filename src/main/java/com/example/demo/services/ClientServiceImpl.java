@@ -37,6 +37,11 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     }
 
     @Override
+    public void deleteUserByUsername(String username) {
+        clientRepository.deleteUserByUsername(username);
+    }
+
+    @Override
     public Client getClientByUsername(String username) {
         return clientRepository.findClientByUsername(username);
     }

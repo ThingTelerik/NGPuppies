@@ -37,6 +37,12 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("update Client c set c = ?1 where c.EIK =?2")
     void updateClientByEik(Client client, String Eik);
 
+    @Modifying
+    @Query("Delete from Client c where c.username = ?1")
+    void deleteUserByUsername(String username);
+
     @Override
     <S extends Client> S save(S entity);
+
+
 }
