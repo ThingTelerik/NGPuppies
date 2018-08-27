@@ -32,7 +32,7 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     }
 
     @Override
-    public void update(String entity, String param) {
+    public void update(Services entity, String param) {
     serviceRepository.updateServiceByName(entity, param);
     }
 

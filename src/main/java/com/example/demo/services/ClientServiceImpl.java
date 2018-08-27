@@ -92,12 +92,12 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     }
     @Override
     public void delete(Client entity) {
-    clientRepository.delete(entity);
+        clientRepository.delete(entity);
     }
 
     @Override
-    public void update(String entity, String eik) {
-    clientRepository.updateClientByEik(entity, eik);
+    public void update(Client entity, String eik) {
+        clientRepository.updateClientByEik(entity, eik);
     }
 
     //create client

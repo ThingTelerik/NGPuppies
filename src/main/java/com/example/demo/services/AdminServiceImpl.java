@@ -1,21 +1,57 @@
 package com.example.demo.services;
 
 import com.example.demo.data.AdminRepository;
+import com.example.demo.data.RoleRepository;
 import com.example.demo.entities.Admin;
+import com.example.demo.entities.Role;
+import com.example.demo.entities.RoleType;
+import com.example.demo.loads.ApiResponse;
+import com.example.demo.loads.JwtAuthResponse;
+import com.example.demo.loads.LoginRequest;
+import com.example.demo.loads.SignupAdminRequest;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.services.base.AdminService;
 import com.example.demo.services.base.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @Service
 @Transactional
 public class AdminServiceImpl implements GenericService<Admin, String>, AdminService {
 
+    private AdminRepository adminRepository;
+
+    private RoleRepository roleRepository;
+
+    private AuthenticationManager authenticationManager;
+
+    private PasswordEncoder passwordEncoder;
+
+    private JwtTokenProvider tokenProvider;
+
     @Autowired
-    AdminRepository adminRepository;
+    public AdminServiceImpl(AdminRepository adminRepository, RoleRepository roleRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+        this.adminRepository = adminRepository;
+        this.roleRepository = roleRepository;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+    }
+
 
     @Override
     public Admin getAdminByEmail(String email) {
@@ -48,7 +84,62 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
     }
 
     @Override
-    public void update(String entity, String param) {
+    public void update(Admin entity, String param) {
         adminRepository.updateAdminByEmail(entity, param);
+    }
+
+    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
+
+
+        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(), loginRequest.getPassword());
+
+
+        Authentication authentication = authenticationManager.authenticate(authRequest);
+
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JwtAuthResponse(jwt));
+
+    }
+
+    public ResponseEntity<?> registerAdmin(@Valid @RequestBody SignupAdminRequest signUpAdminRequest) {
+        if (adminRepository.existsByEmail(signUpAdminRequest.getEmail())) {
+            return new ResponseEntity(new ApiResponse(false, "Email already in use!"),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        if (adminRepository.existsByUsername(signUpAdminRequest.getUsername())) {
+            return new ResponseEntity(new ApiResponse(false, "Username is already used!"),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        Admin admin = new Admin(signUpAdminRequest.getUsername(), signUpAdminRequest.getPassword(), signUpAdminRequest.getEmail());
+
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+
+
+        Role role = roleRepository.findAll().stream()
+                .filter(x -> x.getRoleType().equals(RoleType.ROLE_ADMIN))
+                .findFirst()
+                .orElse(null);
+
+        if (role == null) {
+            role = new Role(RoleType.ROLE_ADMIN);
+            roleRepository.save(role);
+        }
+
+        role.getUsers().add(admin);
+        admin.setRole(role);
+
+        Admin saveAdmin = adminRepository.save(admin);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/admins/ {username}")
+                .buildAndExpand(saveAdmin.getUsername()).toUri();
+
+        return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));
     }
 }

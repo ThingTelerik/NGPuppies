@@ -28,82 +28,40 @@ import java.util.List;
 @RequestMapping("api/auth/admin")
 public class AdminController {
 
-    @Autowired
     private AdminServiceImpl adminService;
 
-    @Autowired
-    private RoleServiceImpl roleService;
-
-    @Autowired
-    ClientServiceImpl clientService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @Autowired
     private UserServiceImpl userService;
+
+    private ClientServiceImpl clientService;
+
+    @Autowired
+    public AdminController(AdminServiceImpl adminService, UserServiceImpl userService, ClientServiceImpl clientService) {
+        this.adminService = adminService;
+        this.userService = userService;
+        this.clientService= clientService;
+    }
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-
-
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), loginRequest.getPassword());
-
-
-        Authentication authentication = authenticationManager.authenticate(authRequest);
-
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(jwt));
-
+        ResponseEntity<?> response = null;
+        try {
+            response = adminService.authenticateClient(loginRequest);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return response;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerAdmin(@Valid @RequestBody SignupAdminRequest signUpAdminRequest) {
-        if (adminService.existsByEmail(signUpAdminRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email already in use!"),
-                    HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> registerClient(@Valid @RequestBody SignupAdminRequest signUpAdminRequest) {
+        ResponseEntity<?> result = null;
+        try {
+            result = adminService.registerAdmin(signUpAdminRequest);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-
-        if (adminService.existsByUsername(signUpAdminRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already used!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        Admin admin = new Admin(signUpAdminRequest.getUsername(), signUpAdminRequest.getPassword(), signUpAdminRequest.getEmail());
-
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-
-
-        Role role = roleService.getAll().stream()
-                .filter(x -> x.getRoleType().equals(RoleType.ROLE_ADMIN))
-                .findFirst()
-                .orElse(null);
-
-        if (role == null) {
-            role = new Role(RoleType.ROLE_ADMIN);
-            roleService.create(role);
-        }
-
-        role.getUsers().add(admin);
-        admin.setRole(role);
-
-        Admin saveAdmin = adminService.create(admin);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/admins/ {username}")
-                .buildAndExpand(saveAdmin.getUsername()).toUri();
-
-        return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));
+        return result;
     }
 
     @GetMapping(value = "all")
@@ -124,7 +82,7 @@ public class AdminController {
     public ResponseEntity<Client> updateClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
         Client client = clientService.getClientByUsername(signUpClientRequest.getUsername());
         if (client != null) {
-            clientService.update( signUpClientRequest.getEik(),client.getUsername());
+            clientService.update(client,client.getUsername());
         }
 
 

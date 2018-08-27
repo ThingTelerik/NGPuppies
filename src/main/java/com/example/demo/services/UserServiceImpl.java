@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService, GenericService<User, String
     }
 
     @Override
-    public void update(String entity, String param) {
+    public void update(User entity, String param) {
     userRepository.updateUserByUsername(entity, param);
     }
 

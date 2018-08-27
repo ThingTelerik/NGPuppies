@@ -9,7 +9,7 @@ public interface GenericService<T, P> {
 
     void delete(T entity);
 
-    void update(P entity, P param);
+    void update(T entity, P param);
 
 
 

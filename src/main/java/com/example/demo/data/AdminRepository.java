@@ -14,16 +14,14 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
     @Override
     List<Admin> findAll();
 
-    @Query("Select a from Admin a where a.email = ?1")
     Admin findByEmail(String email);
 
-    @Query("Select a from Admin a where a.username = ?1")
-    Admin findByUserName(String username);
 
-    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Admin a WHERE a.email = ?1")
+    Admin findByUsername(String username);
+
     Boolean existsByEmail(String email);
 
-    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Admin a WHERE a.username = ?1")
+
     Boolean existsByUsername(String username);
 
     @Override
@@ -31,7 +29,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     @Modifying
     @Query("update Admin a set a = ?1 where a.email =?2")
-    void updateAdminByEmail(String admin, String email);
+    void updateAdminByEmail(Admin admin, String email);
 
     @Override
     <S extends Admin> S save(S entity);

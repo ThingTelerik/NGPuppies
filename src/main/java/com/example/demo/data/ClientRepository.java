@@ -18,6 +18,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("Select c from Client c where c.id = ?1")
     Client findClientById(Long aLong);
 
+     Client findByUsername(String Username);
+
     @Query("Select c from Client c where c.username = ?1")
     Client findClientByUsername(String username);
 
@@ -36,7 +38,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Modifying
     @Query("update Client c set c.EIK = ?1 where c.username =?2")
-    void updateClientByEik(String Eik, String username);
+    void updateClientByEik(Client Eik, String username);
 
     @Modifying
     @Query("Delete from Client c where c.username = ?1")
