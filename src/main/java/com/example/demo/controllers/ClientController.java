@@ -40,78 +40,28 @@ import java.util.Collections;
 public class ClientController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private RoleServiceImpl roleService;
-
-    @Autowired
     private ClientServiceImpl clientService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @PostMapping("/auth/client/signin")
+    @PostMapping("/signin")
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-
-        User u = clientService.getClientByUsername(loginRequest.getUsername());
-
-        UsernamePasswordAuthenticationToken authRequest= null;
-        if (u != null) {
-            authRequest = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), loginRequest.getPassword());
+        ResponseEntity<?> response = null;
+        try {
+            response = clientService.authenticateClient(loginRequest);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-
-            Authentication authentication = authenticationManager.authenticate(authRequest);
-
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            String jwt = tokenProvider.generateToken(authentication);
-            return ResponseEntity.ok(new JwtAuthResponse(jwt));
-
+        return response;
     }
 
-    @PostMapping("/auth/client/register")
-    public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest){
-        if(clientService.existsByEik(signUpClientRequest.getEik())){
-            return new ResponseEntity(new ApiResponse(false, "EIK already in use!"),
-                    HttpStatus.BAD_REQUEST);
+    @PostMapping("/register")
+    public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
+        ResponseEntity<?> result = null;
+        try {
+            result = clientService.registerClient(signUpClientRequest);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
-
-        if(clientService.existsByUsername(signUpClientRequest.getUsername())){
-            return new ResponseEntity(new ApiResponse(false, "Username is already used!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        Client client = new Client(signUpClientRequest.getUsername(), signUpClientRequest.getPassword(), signUpClientRequest.getEik());
-
-        client.setPassword(passwordEncoder.encode(client.getPassword()));
-
-
-        Role role = roleService.getAll().stream()
-                .filter(x->x.getRoleType().equals(RoleType.ROLE_CLIENT))
-                .findFirst()
-                .orElse(null);
-
-        if (role == null) {
-            role = new Role(RoleType.ROLE_CLIENT);
-            roleService.create(role);
-        }
-
-        role.getUsers().add(client);
-        client.setRole(role);
-
-        Client savedClient = clientService.create(client);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/clients/ {username}")
-                .buildAndExpand(savedClient.getUsername()).toUri();
-
-        return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));
+        return result;
     }
 
 
@@ -136,7 +86,7 @@ public class ClientController {
 
     //delete cient by id
     @DeleteMapping("/clients/{clientID}")
-    public ResponseEntity<?> deleteClient(@PathVariable Long postId) {
+    public ResponseEntity<?> deleteClient(@PathVariable("clientID") Long postId) {
 
         return clientService.deleteClientById(postId);
 

@@ -92,13 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/api/auth/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET,  "/api/clients/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET,  "/api/admins/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET,  "/api/subscribers/**")
+                .antMatchers("/api/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
