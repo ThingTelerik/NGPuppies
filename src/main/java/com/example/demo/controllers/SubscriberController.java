@@ -2,53 +2,63 @@ package com.example.demo.controllers;
 
 import com.example.demo.data.SubscriberRepository;
 import com.example.demo.entities.Subscriber;
+import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.services.base.ClientService;
 import com.example.demo.services.base.ISubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class SubscriberController {
-    ISubscriberService subscriberService;
+   private ISubscriberService subscriberService;
 
     @Autowired
     public SubscriberController(ISubscriberService subscriberService){
         this.subscriberService = subscriberService;
     }
 
-    //Get all subscribers
-    @GetMapping("/subscribers")
-    public List<Subscriber> getAllSubscribers() {
-        return subscriberService.getAll();
+    //create subscriber for client id
+    @PostMapping("/clients/{clientID}/subscribers")
+    public Subscriber createSubscriber(@PathVariable (value = "clientID") Long clientID,
+                                       @Valid @RequestBody Subscriber subscriber) {
+        return this.subscriberService.createSubscriberByClientId(clientID, subscriber);
     }
 
-    //Get subscriber by id
-    @GetMapping("/subscribers/{subscriberID}")
-    public Subscriber getSubscriberById(@PathVariable (value = "subscriberID") int id){
-        return this.subscriberService.getSubscriberByID(id);
+    //get all subscribers by client id
+    @GetMapping("/clients/{clientID}/subscribers")
+    public Page<Subscriber> getAllSubscriersByClientId(@PathVariable (value = "clientID") Long clientID,
+                                                       Pageable pageable) {
+        return subscriberService.getAllSubscribersByClientsID(clientID,pageable);
     }
 
-    //Post new Subscriber
-    @PostMapping("/subscribers/add")
-    public Subscriber createSubscriber(@Valid @RequestBody Subscriber newSubscriber){
-        return this.subscriberService.createSubscriber(newSubscriber);
+    //update subscriber by id for a given cient(by id)
+    @PutMapping("/clients/{clientID}/subscribers/{subscriberID}")
+    public Subscriber updateSubscriber(@PathVariable (value = "clientID") Long clientID,
+                                       @PathVariable (value = "subscriberID") Integer sID,
+                                       @Valid @RequestBody Subscriber subscriberRequest) {
+
+        return this.subscriberService.updateSubscriberByClientID(clientID,sID,subscriberRequest);
+
     }
 
-    //Delete given Subscriber by id
-    @DeleteMapping("/subscribers/{id}")
-    public ResponseEntity<?> deleteSubscriber(@PathVariable(value = "id") int id) {
+    //delete subscriber for a given client
+    @DeleteMapping("/clients/{clientID}/subscribers/{subscriberID}")
+    public ResponseEntity<?> deleteComment(@PathVariable (value = "clientID") Long clientID,
+                                           @PathVariable (value = "subscriberID") Integer subscriberID) {
 
-        return this.subscriberService.deleteSubscriber(id);
-    }
+        return subscriberService.deleteSubscriberByClientID(clientID,subscriberID);
 
-    //Update given Subscriber by id
-    @PutMapping("/subscribers/{id}")
-    public Subscriber updateSubscriber(@PathVariable(value = "id") int id, @Valid @RequestBody Subscriber subscriber){
-        return subscriberService.updateSubscriber(id, subscriber);
-    }
+}
+
+
+
+
+
 
 }

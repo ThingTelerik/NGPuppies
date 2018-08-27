@@ -1,62 +1,76 @@
 package com.example.demo.services;
 
+import com.example.demo.data.ClientRepository;
 import com.example.demo.data.SubscriberRepository;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.services.base.ISubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SubscriberService implements ISubscriberService {
 
-    SubscriberRepository subscriberRepository;
-
     @Autowired
-    public SubscriberService(SubscriberRepository subscriberRepository){
+    SubscriberRepository subscriberRepository;
+    @Autowired
+    ClientRepository clientRepository;
+
+    public SubscriberService(SubscriberRepository subscriberRepository, ClientRepository clientRepository){
         this.subscriberRepository = subscriberRepository;
+        this.clientRepository = clientRepository;
     }
 
+
+    //Get all subscribers for a given client
     @Override
-    public List<Subscriber> getAll() {
-        return this.subscriberRepository.findAll();
+    public Page<Subscriber> getAllSubscribersByClientsID(Long clientID, Pageable pageable) {
+        return subscriberRepository.findAllByBank_Id(clientID,pageable);
+
     }
 
+    //create subscriber for a given client
     @Override
-    public Subscriber getSubscriberByID(int id) {
-
-        return this.subscriberRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Subscriber", "id", id));
+    public Subscriber createSubscriberByClientId(Long clientID, Subscriber subscriber) {
+        return this.clientRepository.findById(clientID).map(client -> {
+            subscriber.setBank(client);
+            return subscriberRepository.save(subscriber);
+        }).orElseThrow(() -> new ResourceNotFoundException("Client", "not found",clientID));
     }
 
+
+    //update subscriber by for a given client
     @Override
-    public Subscriber createSubscriber(Subscriber newSubscriber) {
-        return subscriberRepository.save(newSubscriber);
+    public Subscriber updateSubscriberByClientID(Long clientID, Integer sID, Subscriber subscriberRequest) {
+
+        if(!clientRepository.existsById(clientID)) {
+            throw new ResourceNotFoundException("Client ","Not found",clientID);
+        }
+        return subscriberRepository.findById(sID).map(subscriber -> {
+            subscriber.setAddress(subscriberRequest.getAddress());
+            subscriber.setEGN(subscriberRequest.getEGN());
+            subscriber.setFirstName(subscriberRequest.getFirstName());
+            subscriber.setLastName(subscriberRequest.getLastName());
+            subscriber.setPhoneNumber(subscriberRequest.getPhoneNumber());
+            return subscriberRepository.save(subscriber);
+        }).orElseThrow(() -> new ResourceNotFoundException("Subscriber","doesn't exist",sID));
     }
 
+
+    //delete subscriber by for a given client
     @Override
-    public ResponseEntity<?> deleteSubscriber(int id) {
-        Subscriber s = subscriberRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Subscriber", "id", id));
+    public ResponseEntity<?> deleteSubscriberByClientID(Long clientID, Integer subscriberID) {
+        if(!clientRepository.existsById(clientID)) {
+            throw new ResourceNotFoundException("ClientID ","not Found:",clientID);
+        }
 
-        subscriberRepository.delete(s);
-
-        return ResponseEntity.ok().build();
+        return subscriberRepository.findById(subscriberID).map(subscriber -> {
+            subscriberRepository.delete(subscriber);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(() -> new ResourceNotFoundException("Subscriber ","not Found:",subscriberID));
     }
 
-    @Override
-    public Subscriber updateSubscriber(int id, Subscriber subscriber) {
-        Subscriber newSubscriber = subscriberRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Bank", "id", id));
-        newSubscriber.setEGN(subscriber.getEGN());
-        newSubscriber.setFirstName(subscriber.getFirstName());
-        newSubscriber.setLastName(subscriber.getLastName());
-        newSubscriber.setPhoneNumber(subscriber.getPhoneNumber());
-        newSubscriber.setAddress(subscriber.getAddress());
-        Subscriber updatedSubscriber = subscriberRepository.save(newSubscriber);
-        return updatedSubscriber;
-    }
 }

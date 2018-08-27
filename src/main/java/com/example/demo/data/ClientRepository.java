@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
     @Override
     List<Client> findAll();
@@ -41,8 +42,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("Delete from Client c where c.username = ?1")
     void deleteUserByUsername(String username);
 
-    @Override
-    <S extends Client> S save(S entity);
 
 
 }

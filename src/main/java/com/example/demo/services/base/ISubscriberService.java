@@ -1,16 +1,19 @@
 package com.example.demo.services.base;
 
 import com.example.demo.entities.Subscriber;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ISubscriberService {
-    public List<Subscriber> getAll();
-    public Subscriber getSubscriberByID(int id);
 
-    Subscriber createSubscriber(Subscriber newSubscriber);
-    ResponseEntity<?> deleteSubscriber(int id);
+    Page<Subscriber> getAllSubscribersByClientsID(Long clientID, Pageable pageable);
 
-    Subscriber updateSubscriber(int id, Subscriber subscriber);
+    Subscriber createSubscriberByClientId(Long clientID, Subscriber subscriber);
+
+    Subscriber updateSubscriberByClientID(Long clientID, Integer sID, Subscriber subscriberRequest);
+
+    ResponseEntity<?> deleteSubscriberByClientID(Long clientID, Integer subscriberID);
 }
