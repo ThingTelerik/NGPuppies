@@ -33,7 +33,7 @@ public class SubscriberController {
     }
 
     //Post new Subscriber
-    @PostMapping("/subscribers")
+    @PostMapping("/subscribers/add")
     public Subscriber createSubscriber(@Valid @RequestBody Subscriber newSubscriber){
         return this.subscriberService.createSubscriber(newSubscriber);
     }
