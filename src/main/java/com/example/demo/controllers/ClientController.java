@@ -78,7 +78,7 @@ public class ClientController {
     }
     //update client by id
     @PutMapping("/clients/{clientID}")
-    public Client updateClient(@PathVariable Long clientID, @Valid @RequestBody Client postRequest) {
+    public Client updateClient(@PathVariable("clientID") Long clientID, @Valid @RequestBody Client postRequest) {
 
        return this.clientService.updateClient(clientID, postRequest);
 
