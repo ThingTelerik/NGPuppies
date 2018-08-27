@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,9 +31,12 @@ public class Subscriber {
     private String EGN;
 
     private String address;
+
     @ManyToOne
-    @JoinColumn (name = "bank_id", referencedColumnName = "id")
-    private User subscribersBank;
+    @JoinColumn(name="bank_id")
+    @JsonIgnore
+    private Client bank;
+
 
     @ManyToMany
     @JoinTable(name = "services_subscribers",
@@ -92,19 +96,19 @@ public class Subscriber {
         this.address = address;
     }
 
-    public User getSubscribersBank() {
-        return subscribersBank;
-    }
-
-    public void setSubscribersBank(User subscribersBank) {
-        this.subscribersBank = subscribersBank;
-    }
-
     public Set<Services> getServices() {
         return services;
     }
 
     public void setServices(Set<Services> services) {
         this.services = services;
+    }
+
+    public Client getBank() {
+        return bank;
+    }
+
+    public void setBank(Client bank) {
+        this.bank = bank;
     }
 }
