@@ -34,8 +34,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     void delete(Client entity);
 
     @Modifying
-    @Query("update Client c set c = ?1 where c.EIK =?2")
-    void updateClientByEik(Client client, String Eik);
+    @Query("update Client c set c.EIK = ?1 where c.username =?2")
+    void updateClientByEik(String oldEik, String username);
 
     @Modifying
     @Query("Delete from Client c where c.username = ?1")

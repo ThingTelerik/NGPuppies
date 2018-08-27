@@ -23,7 +23,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Modifying
     @Query("update Role r set r = ?1 where r.roleType =?2")
-    void updateRoleByRoleType(Role role, RoleType roleType);
+    void updateRoleByRoleType(RoleType role, RoleType roleType);
 
 
     @Override

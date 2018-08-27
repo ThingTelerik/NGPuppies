@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/subscribers")
 public class SubscribersController {
 
     SubscribersRepository subscribersRepository;
@@ -20,7 +20,7 @@ public class SubscribersController {
         subscribersRepository = subscribersRepository;
     }
 
-    @GetMapping("/subscribers")
+    @GetMapping("/all")
     public List<Subscriber> getAllSubscribers(){
 
         return this.subscribersRepository.findAll();

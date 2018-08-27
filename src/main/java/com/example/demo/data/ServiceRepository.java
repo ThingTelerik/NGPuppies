@@ -21,5 +21,5 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
 
     @Modifying
     @Query("update Services s set s = ?1 where s.name =?2")
-    void updateServiceByName(Services services, String name);
+    void updateServiceByName(String services, String name);
 }

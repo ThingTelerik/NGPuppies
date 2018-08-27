@@ -62,7 +62,7 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     }
 
     @Override
-    public void update(Client entity, String eik) {
+    public void update(String entity, String eik) {
     clientRepository.updateClientByEik(entity, eik);
     }
 

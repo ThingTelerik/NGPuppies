@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query("update User u set u = ?1 where u.username =?2")
-    void updateUserByUsername(User user, String username);
+    void updateUserByUsername(String user, String username);
 
     @Override
     <S extends User> S save(S entity);

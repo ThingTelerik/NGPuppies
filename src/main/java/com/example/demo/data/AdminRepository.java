@@ -31,7 +31,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     @Modifying
     @Query("update Admin a set a = ?1 where a.email =?2")
-    void updateAdminByEmail(Admin admin, String email);
+    void updateAdminByEmail(String admin, String email);
 
     @Override
     <S extends Admin> S save(S entity);

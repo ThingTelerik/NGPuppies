@@ -121,10 +121,12 @@ public class AdminController {
     //Does not work
     //Transient instance bullshit -> cascade type to fix
     @PutMapping(value = "updateClientEik")
-    public ResponseEntity<Client> updateClient(@RequestBody Client client) {
+    public ResponseEntity<Client> updateClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
+        Client client = clientService.getClientByUsername(signUpClientRequest.getUsername());
+        if (client != null) {
+            clientService.update( signUpClientRequest.getEik(),client.getUsername());
+        }
 
-
-        clientService.update(client, client.getEIK());
 
         Client result = new Client();
         BeanUtils.copyProperties(client, result);
@@ -135,7 +137,7 @@ public class AdminController {
     //needs better implementation maybe
     @DeleteMapping("/deleteClient/{username}")
     public ResponseEntity deleteClient(@PathVariable("username") String username) {
-        if(clientService.existsByUsername(username)){
+        if (clientService.existsByUsername(username)) {
             clientService.deleteUserByUsername(username);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }

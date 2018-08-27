@@ -48,7 +48,7 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
     }
 
     @Override
-    public void update(Admin entity, String param) {
+    public void update(String entity, String param) {
         adminRepository.updateAdminByEmail(entity, param);
     }
 }
