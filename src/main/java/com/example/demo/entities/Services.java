@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -17,6 +20,7 @@ public class Services {
     private String  name;
 
     @OneToMany(mappedBy = "service", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<Bill> bills;
 
     @ManyToMany(mappedBy = "services", cascade = CascadeType.ALL, targetEntity = Subscriber.class)
@@ -60,4 +64,6 @@ public class Services {
     public void setSubscribers(Set<Subscriber> subscribers) {
         this.subscribers = subscribers;
     }
+
+
 }

@@ -1,14 +1,19 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.apache.tomcat.jni.Local;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
+
 
 @Entity
-@Table(name = "bills", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "subscriber_id"})
-})
+@Table
 public class Bill {
 
     @Id
@@ -17,28 +22,30 @@ public class Bill {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @NotBlank
     @JoinColumn(name = "service_id", referencedColumnName = "id")
+    @JsonBackReference
     private Services service;
 
     @NotNull
     @Column(name = "startDate")
-    private Instant startDate;
+    private LocalDate startDate;
 
     @NotNull
     @Column(name = "endDate")
-    private Instant endDate;
+    private LocalDate endDate;
+
+    private LocalDate paymentDate;
 
     @NotNull
     @Column(name = "amount")
     private double amount;
-
-    @Enumerated
-    @NotNull
-    @Column(name = "currency")
+    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @NotNull
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "subscriber_id", referencedColumnName = "id")
     private Subscriber subscriber;
 
@@ -46,21 +53,9 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(@NotNull Services service, @NotNull Instant startDate, @NotNull Instant endDate, @NotNull double amount, @NotNull Currency currency, Subscriber subscriber) {
-        setService(service);
-        setStartDate(startDate);
-        setEndDate(endDate);
-        setAmount(amount);
-        setCurrency(currency);
-        setSubscriber(subscriber);
-    }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Services getService() {
@@ -71,21 +66,7 @@ public class Bill {
         this.service = service;
     }
 
-    public Instant getStartDate() {
-        return startDate;
-    }
 
-    public void setStartDate(Instant startDate) {
-        this.startDate = startDate;
-    }
-
-    public Instant getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Instant endDate) {
-        this.endDate = endDate;
-    }
 
     public double getAmount() {
         return amount;
@@ -110,4 +91,34 @@ public class Bill {
     public void setSubscriber(Subscriber subscriber) {
         this.subscriber = subscriber;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDate paymentDate) {
+
+        this.paymentDate = paymentDate;
+    }
+
 }
