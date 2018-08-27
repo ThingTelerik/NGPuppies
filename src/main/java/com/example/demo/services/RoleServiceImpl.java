@@ -34,8 +34,9 @@ public class RoleServiceImpl implements GenericService<Role, RoleType>, RoleServ
     }
 
     @Override
-    public void update(Role entity, RoleType param) {
-    roleRepository.updateRoleByRoleType(entity,param );
+    public Role update(Role entity, RoleType param) {
+    return roleRepository.updateRoleByRoleType(entity,param );
+
     }
 
     @Override

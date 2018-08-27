@@ -1,16 +1,13 @@
 package com.example.demo.data;
 
-import com.example.demo.entities.Client;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public interface RoleRepository extends JpaRepository<Role, Long> {
@@ -23,7 +20,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Modifying
     @Query("update Role r set r = ?1 where r.roleType =?2")
-    void updateRoleByRoleType(Role role, RoleType roleType);
+    Role updateRoleByRoleType(Role role, RoleType roleType);
 
 
     @Override

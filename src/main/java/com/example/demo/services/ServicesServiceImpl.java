@@ -32,8 +32,9 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     }
 
     @Override
-    public void update(Services entity, String param) {
-    serviceRepository.updateServiceByName(entity, param);
+    public Services update(Services entity, String param) {
+    return serviceRepository.updateServiceByName(entity, param);
+
     }
 
     @Override

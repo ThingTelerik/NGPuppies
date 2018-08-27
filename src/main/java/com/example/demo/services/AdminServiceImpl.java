@@ -1,10 +1,12 @@
 package com.example.demo.services;
 
 import com.example.demo.data.AdminRepository;
+import com.example.demo.data.ClientRepository;
 import com.example.demo.data.RoleRepository;
 import com.example.demo.entities.Admin;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.loads.ApiResponse;
 import com.example.demo.loads.JwtAuthResponse;
 import com.example.demo.loads.LoginRequest;
@@ -43,13 +45,16 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
 
     private JwtTokenProvider tokenProvider;
 
+    private ClientRepository clientRepository;
+
     @Autowired
-    public AdminServiceImpl(AdminRepository adminRepository, RoleRepository roleRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+    public AdminServiceImpl(AdminRepository adminRepository, RoleRepository roleRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider, ClientRepository clientRepository) {
         this.adminRepository = adminRepository;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
+        this.clientRepository= clientRepository;
     }
 
 
@@ -84,10 +89,28 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
     }
 
     @Override
-    public void update(Admin entity, String param) {
-        adminRepository.updateAdminByEmail(entity, param);
+    public Admin update(Admin entity, String param) {
+
+        if(!adminRepository.existsByEmail(param)){
+            throw new ResourceNotFoundException("Admin", "Email", param);
+        }
+        Admin admin = adminRepository.findByEmail(param);
+        admin.setUsername(entity.getUsername());
+        admin.setPassword(passwordEncoder.encode(entity.getPassword()));
+        admin.setEmail(entity.getEmail());
+
+        return adminRepository.save(admin);
+
     }
 
+    public ResponseEntity deleteClient(String username) {
+        if (clientRepository.existsByUsername(username)) {
+            clientRepository.deleteUserByUsername(username);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+
+    }
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
 
 

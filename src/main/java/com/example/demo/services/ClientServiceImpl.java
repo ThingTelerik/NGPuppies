@@ -41,7 +41,6 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
 
     private ClientRepository clientRepository;
 
-
     private PasswordEncoder passwordEncoder;
 
     private RoleRepository roleRepository;
@@ -96,8 +95,8 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     }
 
     @Override
-    public void update(Client entity, String eik) {
-        clientRepository.updateClientByEik(entity, eik);
+    public Client update(Client entity, String eik) {
+       return clientRepository.updateClientByEik(entity, eik);
     }
 
     //create client

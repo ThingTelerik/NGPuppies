@@ -1,6 +1,5 @@
 package com.example.demo.data;
 
-import com.example.demo.entities.Client;
 import com.example.demo.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query("update User u set u = ?1 where u.username =?2")
-    void updateUserByUsername(User user, String username);
+    User updateUserByUsername(User user, String username);
 
     @Override
     <S extends User> S save(S entity);

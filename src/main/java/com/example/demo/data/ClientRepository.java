@@ -4,11 +4,9 @@ import com.example.demo.entities.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
@@ -38,7 +36,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Modifying
     @Query("update Client c set c.EIK = ?1 where c.username =?2")
-    void updateClientByEik(Client Eik, String username);
+    Client updateClientByEik(Client Eik, String username);
 
     @Modifying
     @Query("Delete from Client c where c.username = ?1")

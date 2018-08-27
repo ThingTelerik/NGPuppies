@@ -1,6 +1,5 @@
 package com.example.demo.data;
 
-import com.example.demo.entities.Bill;
 import com.example.demo.entities.Services;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -21,5 +20,5 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
 
     @Modifying
     @Query("update Services s set s = ?1 where s.name =?2")
-    void updateServiceByName(Services services, String name);
+    Services updateServiceByName(Services services, String name);
 }

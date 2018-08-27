@@ -1,6 +1,10 @@
 package com.example.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -16,7 +20,8 @@ public class Client extends User {
     private String EIK;
 
 
-    @OneToMany(mappedBy = "bank")
+    @OneToMany(mappedBy = "bank", orphanRemoval = true)
+    @Cascade(value = { CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     @JsonIgnore
     List<Subscriber> subscribers;
 

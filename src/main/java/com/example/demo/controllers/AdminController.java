@@ -95,11 +95,13 @@ public class AdminController {
     //needs better implementation maybe
     @DeleteMapping("/deleteClient/{username}")
     public ResponseEntity deleteClient(@PathVariable("username") String username) {
-        if (clientService.existsByUsername(username)) {
-            clientService.deleteUserByUsername(username);
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+      return   adminService.deleteClient(username);
+    }
+
+    @PutMapping("/update/{email}")
+    public Admin updateAdmin(@PathVariable("email") String email, @Valid @RequestBody Admin admin) {
+
+        return adminService.update(admin, email);
 
     }
 
