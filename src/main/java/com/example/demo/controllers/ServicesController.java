@@ -33,4 +33,10 @@ public class ServicesController {
     List<Services> getAllServicesBySubscriber(@PathVariable(value = "clientID") Long clientId, @PathVariable(value = "subscriberID") Integer subscriberID ){
         return servicesService.getAllServicesBySubscriber(clientId,subscriberID);
     }
+
+    //Add service by SubscriberID
+    @PostMapping("/clients/{clientID}/subscribers/{subscriberID}/services")
+    Services createServiceBySubscriberID(@PathVariable(value = "clientID") Long clientId, @PathVariable(value = "subscriberID") Integer subscriberId,Services newService){
+        return servicesService.createServiceBySubscriberID(clientId,subscriberId,newService);
+    }
  }

@@ -17,5 +17,7 @@ public interface ServicesService {
     Services createService(Services newService);
 
     List<Services> getAllServicesBySubscriber(Long clientId, Integer subscriberID);
+
+    Services createServiceBySubscriberID(Long clientId, Integer subscriberId, Services newService);
 }
 

@@ -113,4 +113,8 @@ public class Subscriber {
     public void setBank(Client bank) {
         this.bank = bank;
     }
+
+    public void addService(Services services){
+        this.services.add(services);
+    }
 }

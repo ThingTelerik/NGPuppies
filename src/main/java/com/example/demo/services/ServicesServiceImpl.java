@@ -49,6 +49,12 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     }
 
     @Override
+    public Services createServiceBySubscriberID(Long clientId, Integer subscriberId, Services newService) {
+        //TODO implement method
+        return null;
+    }
+
+    @Override
     public Services create(Services entity) {
         return serviceRepository.save(entity);
     }
