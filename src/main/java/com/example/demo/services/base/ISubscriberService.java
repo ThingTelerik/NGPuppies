@@ -16,4 +16,6 @@ public interface ISubscriberService {
     Subscriber updateSubscriberByClientID(Long clientID, Integer sID, Subscriber subscriberRequest);
 
     ResponseEntity<?> deleteSubscriberByClientID(Long clientID, Integer subscriberID);
+
+    Subscriber getSubscriberByID(Long clientID, Integer subscriberId);
 }

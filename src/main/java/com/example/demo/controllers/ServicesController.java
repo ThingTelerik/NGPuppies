@@ -27,4 +27,10 @@ public class ServicesController {
     Services createService(@RequestBody Services newService){
        return this.servicesService.createService(newService);
     }
-}
+
+    //Get services by Subscriber
+    @GetMapping("/clients/{clientID}/subscribers/{subscriberID}/services")
+    List<Services> getAllServicesBySubscriber(@PathVariable(value = "clientID") Long clientId, @PathVariable(value = "subscriberID") Integer subscriberID ){
+        return servicesService.getAllServicesBySubscriber(clientId,subscriberID);
+    }
+ }

@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface SubscriberRepository extends JpaRepository<Subscriber, Integer> {
 
     Page<Subscriber> findAllByBank_Id(Long clientID,Pageable pageble);
+    Subscriber findByBank_IdAndId(Long clientId,Integer subscriberID);
 
 }

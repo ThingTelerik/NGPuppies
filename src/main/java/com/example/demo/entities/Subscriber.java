@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,7 +44,7 @@ public class Subscriber {
             joinColumns = @JoinColumn(name = "subscriber_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
     @JsonIgnore
-    private Set<Services> services;
+    private List<Services> services;
 
     public Subscriber(){
 
@@ -97,11 +98,11 @@ public class Subscriber {
         this.address = address;
     }
 
-    public Set<Services> getServices() {
+    public List<Services> getServices() {
         return services;
     }
 
-    public void setServices(Set<Services> services) {
+    public void setServices(List<Services> services) {
         this.services = services;
     }
 

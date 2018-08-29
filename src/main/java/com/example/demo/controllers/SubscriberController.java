@@ -37,6 +37,12 @@ public class SubscriberController {
         return subscriberService.getAllSubscribersByClientsID(clientID,pageable);
     }
 
+    //get subscriber by id for a client
+    @GetMapping("/clients/{clientID}/{subscriberId}")
+    public Subscriber getSubscriberByID(@PathVariable (value = "clientID") Long clientID, @PathVariable(value = "subscriberId") Integer subscriberId){
+        return this.subscriberService.getSubscriberByID(clientID, subscriberId);
+    }
+
     //update subscriber by id for a given cient(by id)
     @PutMapping("/clients/{clientID}/subscribers/{subscriberID}")
     public Subscriber updateSubscriber(@PathVariable (value = "clientID") Long clientID,

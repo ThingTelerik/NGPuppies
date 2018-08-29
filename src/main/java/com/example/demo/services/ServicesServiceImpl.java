@@ -1,7 +1,12 @@
 package com.example.demo.services;
 
+import com.example.demo.data.ClientRepository;
 import com.example.demo.data.ServiceRepository;
+import com.example.demo.data.SubscriberRepository;
+import com.example.demo.entities.Client;
 import com.example.demo.entities.Services;
+import com.example.demo.entities.Subscriber;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.services.base.GenericService;
 import com.example.demo.services.base.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +21,15 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
 
     @Autowired
     ServiceRepository serviceRepository;
+    ClientRepository clientRepository;
+    SubscriberRepository subscriberRepository;
+    SubscriberService subscriberService;
 
-    public ServicesServiceImpl(ServiceRepository servicesRepository){
+    public ServicesServiceImpl(SubscriberService subscriberService,ServiceRepository servicesRepository,ClientRepository clientRepository,    SubscriberRepository subscriberRepository){
         this.serviceRepository = servicesRepository;
+        this.clientRepository = clientRepository;
+        this.subscriberRepository = subscriberRepository;
+        this.subscriberService = subscriberService;
     }
 
     @Override
@@ -29,6 +40,12 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     @Override
     public Services createService(Services newService) {
         return this.serviceRepository.save(newService);
+    }
+
+    @Override
+    public List<Services> getAllServicesBySubscriber(Long clientId, Integer subscriberID) {
+        Subscriber mySubscriber = this.subscriberService.getSubscriberByID(clientId,subscriberID);
+       return mySubscriber.getServices();
     }
 
     @Override

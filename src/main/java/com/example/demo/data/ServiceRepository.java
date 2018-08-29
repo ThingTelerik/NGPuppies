@@ -10,7 +10,6 @@ import java.util.List;
 public interface ServiceRepository extends JpaRepository<Services, Long> {
 
 
-
     @Query("Select s from Services s join Subscriber sub where sub.phoneNumber = ?1")
     List<Services> findBySubscriberPhone(String phone);
 

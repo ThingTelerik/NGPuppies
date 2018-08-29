@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.data.ClientRepository;
 import com.example.demo.data.SubscriberRepository;
+import com.example.demo.entities.Client;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.services.base.ISubscriberService;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SubscriberService implements ISubscriberService {
@@ -42,6 +45,7 @@ public class SubscriberService implements ISubscriberService {
     }
 
 
+
     //update subscriber by for a given client
     @Override
     public Subscriber updateSubscriberByClientID(Long clientID, Integer sID, Subscriber subscriberRequest) {
@@ -71,6 +75,17 @@ public class SubscriberService implements ISubscriberService {
             subscriberRepository.delete(subscriber);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException("Subscriber ","not Found:",subscriberID));
+    }
+
+    @Override
+    public Subscriber getSubscriberByID(Long clientID, Integer subscriberId) {
+        if(!clientRepository.existsById(clientID)){
+            throw new ResourceNotFoundException("ClientID","Not Found",clientID);
+        }
+
+        return this.subscriberRepository.findByBank_IdAndId(clientID,subscriberId);
+
+
     }
 
 }
