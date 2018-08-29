@@ -16,9 +16,19 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
 
     @Autowired
     ServiceRepository serviceRepository;
+
+    public ServicesServiceImpl(ServiceRepository servicesRepository){
+        this.serviceRepository = servicesRepository;
+    }
+
     @Override
     public List<Services> getAll() {
         return serviceRepository.findAll();
+    }
+
+    @Override
+    public Services createService(Services newService) {
+        return this.serviceRepository.save(newService);
     }
 
     @Override

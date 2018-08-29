@@ -6,8 +6,14 @@ import java.util.List;
 
 public interface ServicesService {
 
+
+
     List<Services> findBySubscriberPhone(String phone);
 
     List<Services> findBySubscriberEGN(String egn);
+
+    List<Services> getAll();
+
+    Services createService(Services newService);
 }
 

@@ -53,6 +53,12 @@ public class Bill {
     public Bill() {
     }
 
+    public Bill(@NotNull double amount, Currency currency) {
+        this.amount = amount;
+        this.currency = currency;
+        this.setPaymentDate(null);
+
+    }
 
     public long getId() {
         return id;
@@ -120,5 +126,6 @@ public class Bill {
 
         this.paymentDate = paymentDate;
     }
+
 
 }

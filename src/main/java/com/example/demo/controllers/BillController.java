@@ -1,15 +1,13 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Bill;
+import com.example.demo.entities.Services;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.services.base.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/clients/{clientID}")
@@ -33,4 +31,8 @@ public class BillController {
         return billService.getAllPaidBills(subscriberId,pageable);
     }
 
+//    @PostMapping("/{subscriberId}/bills")
+//    public Bill createUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID, @RequestBody Services billService, @RequestBody Bill newBill){
+//        return billService.createUnpaidBill(subscriberID,billService,newBill);
+//    }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.entities;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -19,11 +18,8 @@ public class Services {
     @Column(name = "name")
     private String  name;
 
-    @OneToMany(mappedBy = "service", fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Set<Bill> bills;
-
     @ManyToMany(mappedBy = "services", cascade = CascadeType.ALL, targetEntity = Subscriber.class)
+    @JsonIgnore
     private Set<Subscriber> subscribers;
 
     public Services() {
@@ -47,14 +43,6 @@ public class Services {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Bill> getBills() {
-        return bills;
-    }
-
-    public void setBills(Set<Bill> bills) {
-        this.bills = bills;
     }
 
     public Set<Subscriber> getSubscribers() {

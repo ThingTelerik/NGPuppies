@@ -42,6 +42,7 @@ public class Subscriber {
     @JoinTable(name = "services_subscribers",
             joinColumns = @JoinColumn(name = "subscriber_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "service_id", referencedColumnName = "id"))
+    @JsonIgnore
     private Set<Services> services;
 
     public Subscriber(){
