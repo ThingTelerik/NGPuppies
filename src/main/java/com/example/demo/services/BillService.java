@@ -33,8 +33,8 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Page<Bill> getAllPaidBills(Integer subscriberId, Pageable pageable) {
-        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(subscriberId,pageable);
+    public Page<Bill> getAllPaidBills(Integer subscriberId,LocalDate paymentDate, Pageable pageable) {
+        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(subscriberId,paymentDate,pageable);
     }
 
     @Override

@@ -16,9 +16,9 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
     Page<Bill> findAllBySubscriber_IdAndPaymentDateIsNull(Integer subscriberID,Pageable pageble);
-    Page<Bill> findAllBySubscriber_IdAndPaymentDateIsNotNull(Integer subscriberID,Pageable pageable);
+    Page<Bill> findAllBySubscriber_IdAndPaymentDateIsNotNull(Integer subscriberID,LocalDate paymentDate, Pageable pageable);
 
     List<Bill> findAllBySubscriber_IdAndPaymentDateIsAfterAndPaymentDateIsBefore(Integer subscriberId,LocalDate startDate, LocalDate endDate);
-    List<Bill> findAllBySubscriber_IdAndService_NameAAndPaymentDateIsNotNull();
+    //List<Bill> findAllBySubscriber_IdAndService_NameAAndPaymentDateIsNotNull(Integer subscriberID,String serviceName, LocalDate payDate);
 
 }

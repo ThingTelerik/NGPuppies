@@ -24,11 +24,10 @@ public class BillController {
                                                  Pageable pageable) {
         return billService.getAllUnpaidBills(subscriberId,pageable);
     }
-
+//TODO fix, not tested, bill added for billRepo method compile
     @GetMapping("/{subscriberId}/paidbills")
-    public Page<Bill> getAllPaidBills(@PathVariable(value = "subscriberId") Integer subscriberId,
-                                        Pageable pageable) {
-        return billService.getAllPaidBills(subscriberId,pageable);
+    public Page<Bill> getAllPaidBills(@PathVariable(value = "subscriberId")  Integer subscriberId, Bill bill, Pageable pageable) {
+        return billService.getAllPaidBills(subscriberId,bill.getPaymentDate(),pageable);
     }
 
 //    @PostMapping("/{subscriberId}/bills")
