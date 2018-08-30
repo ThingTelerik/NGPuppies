@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<Services, Long> {
 
+
+
     @Query("Select s from Services s join Subscriber sub where sub.phoneNumber = ?1")
     List<Services> findBySubscriberPhone(String phone);
 
@@ -18,4 +20,6 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
     @Modifying
     @Query("update Services s set s = ?1 where s.name =?2")
     Services updateServiceByName(Services services, String name);
+
+
 }

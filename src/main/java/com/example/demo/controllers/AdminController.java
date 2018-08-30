@@ -76,8 +76,18 @@ public class AdminController {
         return new ResponseEntity<List<User>>(responseUserList, HttpStatus.OK);
     }
 
+
+    //curl http://localhost:8080/api/auth/admin/deleteClient/{username)
+    //needs better implementation maybe
+    @DeleteMapping("/deleteClient/{username}")
+    public ResponseEntity deleteClient(@PathVariable("username") String username) {
+      return   adminService.deleteClient(username);
+    }
+
+
     //Does not work
-    //Transient instance bullshit -> cascade type to fix
+    //Transient instance bullshit -> cascade type to fix\
+    //TODO FIX
     @PutMapping(value = "updateClientEik")
     public ResponseEntity<Client> updateClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
         Client client = clientService.getClientByUsername(signUpClientRequest.getUsername());
@@ -89,13 +99,6 @@ public class AdminController {
         Client result = new Client();
         BeanUtils.copyProperties(client, result);
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    //curl http://localhost:8080/api/auth/admin/deleteClient/{username)
-    //needs better implementation maybe
-    @DeleteMapping("/deleteClient/{username}")
-    public ResponseEntity deleteClient(@PathVariable("username") String username) {
-      return   adminService.deleteClient(username);
     }
 
     @PutMapping("/update/{email}")

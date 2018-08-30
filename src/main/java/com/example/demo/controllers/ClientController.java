@@ -42,6 +42,7 @@ public class ClientController {
     @Autowired
     private ClientServiceImpl clientService;
 
+    //TODO fix
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
         ResponseEntity<?> response = null;
@@ -53,6 +54,7 @@ public class ClientController {
         return response;
     }
 
+    //Register new client
     @PostMapping("/register")
     public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
         ResponseEntity<?> result = null;
@@ -64,6 +66,9 @@ public class ClientController {
         return result;
     }
 
+    //TODO METHOD GETTING BANK BY ID
+
+
 
     //Get all clients
     @GetMapping("/clients")
@@ -71,15 +76,10 @@ public class ClientController {
         return clientService.getAll(pageable);
     }
 
-    //Add client
-    @PostMapping("/clients")
-    public Client createClents(@Valid @RequestBody Client client) {
-        return clientService.create(client);
-    }
+    //TODO POJO CLIENT CLASS
     //update client by id
     @PutMapping("/clients/{clientID}")
     public Client updateClient(@PathVariable("clientID") Long clientID, @Valid @RequestBody Client postRequest) {
-
        return this.clientService.updateClient(clientID, postRequest);
 
     }

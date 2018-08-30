@@ -19,12 +19,12 @@ import java.util.List;
 @Transactional
 public class ServicesServiceImpl implements ServicesService, GenericService<Services, String> {
 
-    @Autowired
-    ServiceRepository serviceRepository;
-    ClientRepository clientRepository;
-    SubscriberRepository subscriberRepository;
-    SubscriberService subscriberService;
+   private ServiceRepository serviceRepository;
+   private ClientRepository clientRepository;
+   private SubscriberRepository subscriberRepository;
+   private SubscriberService subscriberService;
 
+    @Autowired
     public ServicesServiceImpl(SubscriberService subscriberService,ServiceRepository servicesRepository,ClientRepository clientRepository,    SubscriberRepository subscriberRepository){
         this.serviceRepository = servicesRepository;
         this.clientRepository = clientRepository;
