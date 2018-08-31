@@ -11,6 +11,12 @@ public interface ServiceRepository extends JpaRepository<Services, Long> {
 
 
 
+    @Query(value = "select * from services s \n" +
+            "join services_subscribers on services.id = services_subscribers.service_id\n" +
+            "join subscribers on services_subscribers.subscriber_id = subscribers.id\n" +
+            "join bill on subscribers. id = bill.subscriber_id where bill.payment_date is not null", nativeQuery = true)
+    List<Services> findlistOfPaidServicesBySub(String phone);
+
     @Query("Select s from Services s join Subscriber sub where sub.phoneNumber = ?1")
     List<Services> findBySubscriberPhone(String phone);
 

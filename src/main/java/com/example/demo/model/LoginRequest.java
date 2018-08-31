@@ -1,4 +1,4 @@
-package com.example.demo.loads;
+package com.example.demo.model;
 
 import javax.validation.constraints.NotNull;
 

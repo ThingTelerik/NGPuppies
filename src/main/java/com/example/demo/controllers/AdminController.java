@@ -1,26 +1,19 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.*;
-import com.example.demo.loads.*;
-import com.example.demo.security.JwtTokenProvider;
+import com.example.demo.model.LoginRequest;
+import com.example.demo.model.SignUpClientRequest;
+import com.example.demo.model.SignupAdminRequest;
 import com.example.demo.services.AdminServiceImpl;
 import com.example.demo.services.ClientServiceImpl;
-import com.example.demo.services.RoleServiceImpl;
 import com.example.demo.services.UserServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 

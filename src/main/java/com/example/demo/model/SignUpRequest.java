@@ -1,4 +1,4 @@
-package com.example.demo.loads;
+package com.example.demo.model;
 
 import org.hibernate.validator.constraints.Length;
 

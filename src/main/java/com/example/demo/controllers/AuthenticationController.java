@@ -1,8 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.loads.JwtAuthResponse;
-import com.example.demo.loads.LoginRequest;
-import com.example.demo.loads.SignUpRequest;
+import com.example.demo.model.LoginRequest;
+import com.example.demo.model.SignUpRequest;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

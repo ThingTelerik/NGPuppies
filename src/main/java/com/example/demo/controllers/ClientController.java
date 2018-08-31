@@ -1,39 +1,17 @@
 package com.example.demo.controllers;
 
-import com.example.demo.data.ClientRepository;
-import com.example.demo.data.RoleRepository;
-import com.example.demo.data.UserRepository;
 import com.example.demo.entities.Client;
-import com.example.demo.entities.Role;
-import com.example.demo.entities.RoleType;
-import com.example.demo.entities.User;
-import com.example.demo.exceptions.ResourceNotFoundException;
-import com.example.demo.loads.ApiResponse;
-import com.example.demo.loads.JwtAuthResponse;
-import com.example.demo.loads.LoginRequest;
-import com.example.demo.loads.SignUpClientRequest;
-import com.example.demo.security.JwtTokenProvider;
+import com.example.demo.model.LoginRequest;
+import com.example.demo.model.SignUpClientRequest;
 import com.example.demo.services.ClientServiceImpl;
-import com.example.demo.services.RoleServiceImpl;
-import com.sun.org.apache.xalan.internal.xsltc.dom.CachedNodeListIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import javax.validation.Valid;
-import java.net.URI;
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/api")
