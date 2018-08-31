@@ -9,13 +9,12 @@ import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<Services, Long> {
 
+    @Query(value = "SELECT * FROM usersdemo.services\n" +
+            "join bills on bills.service_id = services.id \n" +
+            "join subscribers on bills.subscriber_id = subscribers.id\n" +
+            "where subscribers.phone_number = ?1 and bills.payment_date is not null;", nativeQuery = true)
+    List<Services> allPaidServicesBySubscriber(String phone);
 
-
-    @Query(value = "select * from services s \n" +
-            "join services_subscribers on services.id = services_subscribers.service_id\n" +
-            "join subscribers on services_subscribers.subscriber_id = subscribers.id\n" +
-            "join bill on subscribers. id = bill.subscriber_id where bill.payment_date is not null", nativeQuery = true)
-    List<Services> findlistOfPaidServicesBySub(String phone);
 
     @Query("Select s from Services s join Subscriber sub where sub.phoneNumber = ?1")
     List<Services> findBySubscriberPhone(String phone);

@@ -1,8 +1,6 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 
 import java.util.Date;

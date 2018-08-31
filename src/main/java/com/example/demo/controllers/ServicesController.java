@@ -22,6 +22,11 @@ public class ServicesController {
         return this.servicesService.getAll();
     }
 
+    @GetMapping("/allPaidBySub/{phone}")
+    List<Services> allPaidServicesBySubscriber(@PathVariable(value = "phone") String phone){
+        return servicesService.allPaidServicesBySubscriber(phone);
+    }
+
     //Create new service
     @PostMapping("/services")
     Services createService(@RequestBody Services newService){

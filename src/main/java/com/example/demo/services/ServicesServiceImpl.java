@@ -71,6 +71,11 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     }
 
     @Override
+    public List<Services> allPaidServicesBySubscriber(String phone) {
+        return serviceRepository.allPaidServicesBySubscriber(phone);
+    }
+
+    @Override
     public List<Services> findBySubscriberPhone(String phone) {
         return serviceRepository.findBySubscriberPhone(phone);
     }

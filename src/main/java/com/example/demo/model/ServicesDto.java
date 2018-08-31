@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +11,7 @@ public class ServicesDto {
     private String name;
 
     public ServicesDto(@NotNull @Length(max = 40) String name) {
-      setName(name);
+        setName(name);
     }
 
     public String getName() {

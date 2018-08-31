@@ -1,19 +1,15 @@
 package com.example.demo.services;
 
 import com.example.demo.data.UserRepository;
-import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.Set;
 
 @Service
 @Transactional

@@ -1,13 +1,11 @@
 package com.example.demo.security;
 
-import com.example.demo.entities.Client;
 import com.example.demo.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
     private long id;

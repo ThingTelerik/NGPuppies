@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ServicesService {
 
-
+    List<Services> allPaidServicesBySubscriber(String phone);
 
     List<Services> findBySubscriberPhone(String phone);
 
