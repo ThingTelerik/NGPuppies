@@ -89,6 +89,7 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     public List<Client> getAll() {
         return clientRepository.findAll();
     }
+
     @Override
     public void delete(Client entity) {
         clientRepository.delete(entity);
@@ -96,7 +97,7 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
 
     @Override
     public Client update(Client entity, String eik) {
-       return clientRepository.updateClientByEik(entity, eik);
+        return clientRepository.updateClientByEik(entity, eik);
     }
 
     //create client
@@ -132,13 +133,14 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException("Client", "id", clientID));
     }
-    public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest){
-        if(clientRepository.existsByEik(signUpClientRequest.getEik())){
+
+    public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
+        if (clientRepository.existsByEik(signUpClientRequest.getEik())) {
             return new ResponseEntity(new ApiResponse(false, "EIK already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(clientRepository.existsByUsername(signUpClientRequest.getUsername())){
+        if (clientRepository.existsByUsername(signUpClientRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already used!"),
                     HttpStatus.BAD_REQUEST);
         }
@@ -149,7 +151,7 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
 
 
         Role role = roleRepository.findAll().stream()
-                .filter(x->x.getRoleType().equals(RoleType.ROLE_CLIENT))
+                .filter(x -> x.getRoleType().equals(RoleType.ROLE_CLIENT))
                 .findFirst()
                 .orElse(null);
 
@@ -171,10 +173,9 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     }
 
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
+        Client u = clientRepository.findClientByUsername(loginRequest.getUsername());
 
-        User u = clientRepository.findClientByUsername(loginRequest.getUsername());
-
-        UsernamePasswordAuthenticationToken authRequest= null;
+        UsernamePasswordAuthenticationToken authRequest = null;
         if (u != null) {
             authRequest = new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(), loginRequest.getPassword());

@@ -54,7 +54,7 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
-        this.clientRepository= clientRepository;
+        this.clientRepository = clientRepository;
     }
 
 
@@ -65,7 +65,7 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
 
     @Override
     public Boolean existsByEmail(String email) {
-       return adminRepository.existsByEmail(email);
+        return adminRepository.existsByEmail(email);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
     @Override
     public Admin update(Admin entity, String param) {
 
-        if(!adminRepository.existsByEmail(param)){
+        if (!adminRepository.existsByEmail(param)) {
             throw new ResourceNotFoundException("Admin", "Email", param);
         }
         Admin admin = adminRepository.findByEmail(param);
@@ -111,6 +111,7 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
     }
+
     public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
 
 
