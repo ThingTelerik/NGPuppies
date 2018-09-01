@@ -28,6 +28,11 @@ public class SubscriberService implements ISubscriberService {
     }
 
 
+    @Override
+    public Subscriber findById(Long SubscriberId) {
+        return subscriberRepository.findById(SubscriberId);
+    }
+
     //Get all subscribers for a given client
     @Override
     public Page<Subscriber> getAllSubscribersByClientsID(Long clientID, Pageable pageable) {

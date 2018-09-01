@@ -12,8 +12,10 @@ import java.util.List;
 
 @Repository
 public interface SubscriberRepository extends JpaRepository<Subscriber, Integer> {
+    Subscriber findById(Long SubscriberId);
 
-    Page<Subscriber> findAllByBank_Id(Long clientID,Pageable pageble);
-    Subscriber findByBank_IdAndId(Long clientId,Integer subscriberID);
+    Page<Subscriber> findAllByBank_Id(Long clientID, Pageable pageble);
+
+    Subscriber findByBank_IdAndId(Long clientId, Integer subscriberID);
 
 }

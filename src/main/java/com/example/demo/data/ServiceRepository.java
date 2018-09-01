@@ -1,13 +1,15 @@
 package com.example.demo.data;
 
 import com.example.demo.entities.Services;
+import com.example.demo.model.ServicesDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<Services, Long> {
+
+    Services getById(Long ServiceId);
 
     @Query(value = "SELECT * FROM usersdemo.services\n" +
             "join bills on bills.service_id = services.id \n" +

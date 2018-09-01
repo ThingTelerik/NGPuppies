@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface ISubscriberService {
+    Subscriber findById(Long SubscriberId);
 
     Page<Subscriber> getAllSubscribersByClientsID(Long clientID, Pageable pageable);
 

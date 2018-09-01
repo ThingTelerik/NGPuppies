@@ -19,6 +19,9 @@ public class BillDto {
     @NotNull
     private Currency currency;
 
+    public BillDto() {
+    }
+
     public BillDto(@NotNull LocalDate startDate, @NotNull LocalDate endDate, @NotNull double amount, @NotNull Currency currency) {
         setStartDate(startDate);
         setEndDate(endDate);

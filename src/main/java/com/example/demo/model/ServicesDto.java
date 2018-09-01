@@ -10,6 +10,9 @@ public class ServicesDto {
     @Length(max = 40)
     private String name;
 
+    public ServicesDto() {
+    }
+
     public ServicesDto(@NotNull @Length(max = 40) String name) {
         setName(name);
     }

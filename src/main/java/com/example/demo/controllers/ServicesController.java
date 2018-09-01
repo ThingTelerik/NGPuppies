@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Services;
+import com.example.demo.model.ServicesDto;
 import com.example.demo.services.base.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,13 @@ public class ServicesController {
     }
 
     @GetMapping("/allPaidBySub/{phone}")
-    List<Services> allPaidServicesBySubscriber(@PathVariable(value = "phone") String phone){
+    List<ServicesDto> allPaidServicesBySubscriber(@PathVariable(value = "phone") String phone){
         return servicesService.allPaidServicesBySubscriber(phone);
     }
 
     //Create new service
     @PostMapping("/services")
-    Services createService(@RequestBody Services newService){
+    Services createService(@RequestBody ServicesDto newService){
        return this.servicesService.createService(newService);
     }
 

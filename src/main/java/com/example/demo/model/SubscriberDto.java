@@ -23,6 +23,9 @@ public class SubscriberDto {
 
     private String address;
 
+    public SubscriberDto() {
+    }
+
     public SubscriberDto(@Length(min = 10) String phoneNumber, @NotNull @Length(max = 30) String firstName, @NotNull @Length(max = 30) String lastName, @NotNull @Length(min = 10, max = 10) String EGN, String address) {
         setPhoneNumber(phoneNumber);
         setFirstName(firstName);

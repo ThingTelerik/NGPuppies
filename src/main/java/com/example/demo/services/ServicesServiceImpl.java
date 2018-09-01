@@ -7,13 +7,16 @@ import com.example.demo.entities.Client;
 import com.example.demo.entities.Services;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.model.ServicesDto;
 import com.example.demo.services.base.GenericService;
 import com.example.demo.services.base.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -36,10 +39,11 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     public List<Services> getAll() {
         return serviceRepository.findAll();
     }
-
+    //works
     @Override
-    public Services createService(Services newService) {
-        return this.serviceRepository.save(newService);
+    public Services createService(ServicesDto newService) {
+        Services result = new Services(newService.getName());
+        return serviceRepository.save(result);
     }
 
     @Override
@@ -71,8 +75,20 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     }
 
     @Override
-    public List<Services> allPaidServicesBySubscriber(String phone) {
-        return serviceRepository.allPaidServicesBySubscriber(phone);
+    public Services getById(Long servicesId) {
+        return serviceRepository.getById(servicesId);
+    }
+
+    @Override
+    public List<ServicesDto> allPaidServicesBySubscriber(String phone) {
+        List<ServicesDto> result =
+        serviceRepository.allPaidServicesBySubscriber(phone).stream()
+                .map(x-> {
+                    ServicesDto servicesDto = new ServicesDto(x.getName());
+                    return servicesDto;
+                })
+                .collect(Collectors.toList());
+        return result;
     }
 
     @Override
