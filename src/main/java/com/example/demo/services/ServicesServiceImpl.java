@@ -25,14 +25,14 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
    private ServiceRepository serviceRepository;
    private ClientRepository clientRepository;
    private SubscriberRepository subscriberRepository;
-   private SubscriberService subscriberService;
+    @Autowired
+    private SubscriberService subscriberService;
 
     @Autowired
-    public ServicesServiceImpl(SubscriberService subscriberService,ServiceRepository servicesRepository,ClientRepository clientRepository,    SubscriberRepository subscriberRepository){
+    public ServicesServiceImpl(ServiceRepository servicesRepository,ClientRepository clientRepository,    SubscriberRepository subscriberRepository){
         this.serviceRepository = servicesRepository;
         this.clientRepository = clientRepository;
         this.subscriberRepository = subscriberRepository;
-        this.subscriberService = subscriberService;
     }
 
     @Override
