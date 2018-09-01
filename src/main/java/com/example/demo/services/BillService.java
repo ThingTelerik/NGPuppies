@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class BillService implements IBillService {
@@ -28,6 +29,11 @@ public class BillService implements IBillService {
 
 
     @Override
+    public List<Bill> TenMostResentPaidBillsForASubscriber(String bankName) {
+        return billRepository.TenMostResentPaidBillsForASubscriber(bankName);
+    }
+
+    @Override
     public Page<Bill> getAllUnpaidBills(Integer subscriberId, Pageable pageable) {
         return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNull(subscriberId,pageable);
     }
@@ -37,6 +43,7 @@ public class BillService implements IBillService {
         return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(subscriberId,paymentDate,pageable);
     }
 
+    //TODO currency needed
     @Override
     public Bill createUnpaidBill(Integer subscriberID,Services givenService, Bill newBill) {
         Subscriber billSubscriber =  this.subscriberRepository.findById(subscriberID).
