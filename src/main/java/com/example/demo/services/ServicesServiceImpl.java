@@ -23,16 +23,12 @@ import java.util.stream.Collectors;
 public class ServicesServiceImpl implements ServicesService, GenericService<Services, String> {
 
    private ServiceRepository serviceRepository;
-   private ClientRepository clientRepository;
-   private SubscriberRepository subscriberRepository;
     @Autowired
     private SubscriberService subscriberService;
 
     @Autowired
-    public ServicesServiceImpl(ServiceRepository servicesRepository,ClientRepository clientRepository,    SubscriberRepository subscriberRepository){
+    public ServicesServiceImpl(ServiceRepository servicesRepository){
         this.serviceRepository = servicesRepository;
-        this.clientRepository = clientRepository;
-        this.subscriberRepository = subscriberRepository;
     }
 
     @Override
