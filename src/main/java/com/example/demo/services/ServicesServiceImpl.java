@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +49,7 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     }
 
     @Override
-    public List<Services> getAllServicesBySubscriber(Long clientId, Integer subscriberID) {
+    public Collection<Services> getAllServicesBySubscriber(Long clientId, Integer subscriberID) {
         Subscriber mySubscriber = this.subscriberService.getSubscriberByID(clientId,subscriberID);
        return mySubscriber.getServices();
     }
@@ -55,6 +57,11 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     @Override
     public Services createServiceBySubscriberID(Long clientId, Integer subscriberId, Services newService) {
         //TODO implement method
+        return null;
+    }
+
+    @Override
+    public Services getByName(String name) {
         return null;
     }
 

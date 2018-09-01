@@ -22,9 +22,7 @@ public class Bill {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @NotBlank
     @JoinColumn(name = "service_id", referencedColumnName = "id")
-    @JsonBackReference
     private Services service;
 
     @NotNull
@@ -53,12 +51,6 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(@NotNull double amount, Currency currency) {
-        this.amount = amount;
-        this.currency = currency;
-        this.setPaymentDate(null);
-
-    }
 
     public long getId() {
         return id;

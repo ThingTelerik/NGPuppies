@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -18,9 +19,11 @@ public class Services {
     @Column(name = "name")
     private String  name;
 
+
+
     @ManyToMany(mappedBy = "services", cascade = CascadeType.ALL, targetEntity = Subscriber.class)
     @JsonIgnore
-    private Set<Subscriber> subscribers;
+    private Collection<Subscriber> subscribers;
 
     public Services() {
     }
@@ -45,11 +48,11 @@ public class Services {
         this.name = name;
     }
 
-    public Set<Subscriber> getSubscribers() {
+    public Collection<Subscriber> getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(Set<Subscriber> subscribers) {
+    public void setSubscribers(Collection<Subscriber> subscribers) {
         this.subscribers = subscribers;
     }
 

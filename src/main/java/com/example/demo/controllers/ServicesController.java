@@ -6,7 +6,10 @@ import com.example.demo.services.base.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Service;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -19,7 +22,7 @@ public class ServicesController {
     }
     //Get all services
     @GetMapping("/services")
-    List<Services> getAllServices(){
+    Collection<Services> getAllServices(){
         return this.servicesService.getAll();
     }
 
@@ -36,7 +39,7 @@ public class ServicesController {
 
     //Get services by Subscriber
     @GetMapping("/clients/{clientID}/subscribers/{subscriberID}/services")
-    List<Services> getAllServicesBySubscriber(@PathVariable(value = "clientID") Long clientId, @PathVariable(value = "subscriberID") Integer subscriberID ){
+    Collection<Services> getAllServicesBySubscriber(@PathVariable(value = "clientID") Long clientId, @PathVariable(value = "subscriberID") Integer subscriberID ){
         return servicesService.getAllServicesBySubscriber(clientId,subscriberID);
     }
 
@@ -44,5 +47,10 @@ public class ServicesController {
     @PostMapping("/clients/{clientID}/subscribers/{subscriberID}/services")
     Services createServiceBySubscriberID(@PathVariable(value = "clientID") Long clientId, @PathVariable(value = "subscriberID") Integer subscriberId,Services newService){
         return servicesService.createServiceBySubscriberID(clientId,subscriberId,newService);
+    }
+
+    @GetMapping("/services/{name}")
+    Services getByName(@PathVariable (value = "name") String name){
+        return this.servicesService.getByName(name);
     }
  }

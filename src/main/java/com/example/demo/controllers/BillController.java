@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Bill;
+import com.example.demo.entities.Currency;
 import com.example.demo.entities.Services;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.services.base.IBillService;
@@ -42,8 +43,8 @@ public class BillController {
         return billService.TenMostResentPaidBillsForASubscriber(bankName);
     }
 
-//    @PostMapping("/{subscriberId}/bills")
-//    public Bill createUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID, @RequestBody Services billService, @RequestBody Bill newBill){
-//        return billService.createUnpaidBill(subscriberID,billService,newBill);
-//    }
+    @PostMapping("/{subscriberId}/bills")
+    public Bill createUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID,@RequestBody Bill newBill){
+        return billService.createUnpaidBill(subscriberID,newBill);
+    }
 }
