@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/clients/{clientID}")
+@RequestMapping("/api/clients")
 public class BillController {
 
     private IBillService billService;
@@ -19,15 +21,22 @@ public class BillController {
         this.billService = billService;
     }
 
-    @GetMapping("/{subscriberId}/bills")
+    @GetMapping("/{clientID}/{subscriberId}/bills")
     public Page<Bill> getAllUnpaidBills(@PathVariable(value = "subscriberId") Integer subscriberId,
                                                  Pageable pageable) {
         return billService.getAllUnpaidBills(subscriberId,pageable);
     }
+
 //TODO fix, not tested, bill added for billRepo method compile
-    @GetMapping("/{subscriberId}/paidbills")
+    @GetMapping("/{clientID}/{subscriberId}/paidbills")
     public Page<Bill> getAllPaidBills(@PathVariable(value = "subscriberId")  Integer subscriberId, Bill bill, Pageable pageable) {
         return billService.getAllPaidBills(subscriberId,bill.getPaymentDate(),pageable);
+    }
+
+    //http://localhost:8080/api/clients/lastTenBills?bankName=DSK ->works
+    @GetMapping("/lastTenBills")
+    public List<Bill> TenMostResentPaidBillsForASubscriber(@RequestParam(value = "bankName",required = true) String bankName){
+        return billService.TenMostResentPaidBillsForASubscriber(bankName);
     }
 
 //    @PostMapping("/{subscriberId}/bills")
