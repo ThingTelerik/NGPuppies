@@ -39,11 +39,11 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Page<Bill> getAllPaidBills(Integer subscriberId,LocalDate paymentDate, Pageable pageable) {
-        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(subscriberId,paymentDate,pageable);
+    public Page<Bill> getAllPaidBills(Integer subscriberId, Pageable pageable) {
+        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(subscriberId, pageable);
     }
 
-    //TODO currency needed
+        //TODO currency needed
     @Override
     public Bill createUnpaidBill(Integer subscriberID,Services givenService, Bill newBill) {
         Subscriber billSubscriber =  this.subscriberRepository.findById(subscriberID).

@@ -14,7 +14,7 @@ public interface IBillService {
 
     Page<Bill> getAllUnpaidBills(Integer subscriberId, Pageable pageable);
 
-    Page<Bill> getAllPaidBills(Integer subscriberId, LocalDate payDate, Pageable pageable);
+    Page<Bill> getAllPaidBills(Integer subscriberId, Pageable pageable);
 
     Bill createUnpaidBill(Integer subscriberID, Services services, Bill newBill);
 

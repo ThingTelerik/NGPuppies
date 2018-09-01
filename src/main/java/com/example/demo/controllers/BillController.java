@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/api/clients/{clientID}")
 public class BillController {
 
     private IBillService billService;
@@ -21,17 +21,20 @@ public class BillController {
         this.billService = billService;
     }
 
-    @GetMapping("/{clientID}/{subscriberId}/bills")
+    @GetMapping("/{subscriberId}/bills")
     public Page<Bill> getAllUnpaidBills(@PathVariable(value = "subscriberId") Integer subscriberId,
-                                                 Pageable pageable) {
+                                        Pageable pageable) {
         return billService.getAllUnpaidBills(subscriberId,pageable);
     }
 
-//TODO fix, not tested, bill added for billRepo method compile
-    @GetMapping("/{clientID}/{subscriberId}/paidbills")
-    public Page<Bill> getAllPaidBills(@PathVariable(value = "subscriberId")  Integer subscriberId, Bill bill, Pageable pageable) {
-        return billService.getAllPaidBills(subscriberId,bill.getPaymentDate(),pageable);
+    @GetMapping("/{subscriberId}/paidbills")
+    public Page<Bill> getAllPaidBills(@PathVariable(value = "subscriberId") Integer subscriberId,
+                                      Pageable pageable) {
+        return billService.getAllPaidBills(subscriberId,pageable);
+
     }
+
+
 
     //http://localhost:8080/api/clients/lastTenBills?bankName=DSK ->works
     @GetMapping("/lastTenBills")
