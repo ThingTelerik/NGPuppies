@@ -6,9 +6,8 @@ import com.example.demo.security.CurrentLoggedUser;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.services.base.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -27,5 +26,11 @@ public class UserController {
         return userService.findUserById(activeUser.getId());
 
 
+    }
+
+    @RequestMapping(value = "/username", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUserName(Authentication authentication) {
+        return authentication.getName();
     }
 }
