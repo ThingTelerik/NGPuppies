@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import com.example.demo.entities.Client;
 import com.example.demo.model.LoginRequest;
 import com.example.demo.model.SignUpClientRequest;
+import com.example.demo.security.CurrentLoggedUser;
+import com.example.demo.security.CustomUserDetails;
 import com.example.demo.services.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,6 +54,14 @@ public class ClientController {
     @GetMapping("/clients")
     public Page<Client> getAllClients(Pageable pageable) {
         return clientService.getAll(pageable);
+    }
+
+    //works ->add auth token in authorization header when testing
+    @GetMapping("/currentUser")
+    public Client getCurrentLoggedUser(@CurrentLoggedUser CustomUserDetails activeUser) {
+        Client client = clientService.getClientByUsername(activeUser.getUsername());
+
+        return client;
     }
 
     //TODO POJO CLIENT CLASS

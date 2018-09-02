@@ -1,8 +1,11 @@
 package com.example.demo.controllers;
 
 import com.example.demo.data.SubscriberRepository;
+import com.example.demo.entities.Client;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.security.CurrentLoggedUser;
+import com.example.demo.security.CustomUserDetails;
 import com.example.demo.services.base.ClientService;
 import com.example.demo.services.base.ISubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +21,12 @@ import javax.validation.Valid;
 public class SubscriberController {
    private ISubscriberService subscriberService;
 
+   private ClientService clientService;
+
     @Autowired
-    public SubscriberController(ISubscriberService subscriberService){
+    public SubscriberController(ISubscriberService subscriberService, ClientService clientService){
         this.subscriberService = subscriberService;
+        this.clientService= clientService;
     }
 
     //create subscriber for client id
@@ -35,6 +41,12 @@ public class SubscriberController {
     public Page<Subscriber> getAllSubscriersByClientId(@PathVariable (value = "clientID") Long clientID,
                                                        Pageable pageable) {
         return subscriberService.getAllSubscribersByClientsID(clientID,pageable);
+    }
+
+    //works!
+    @GetMapping("/client/subscribers")
+    public Page<Subscriber> getAllSubscriersByCurrentLoggedClient(@CurrentLoggedUser CustomUserDetails loggedUser,Pageable pageable) {
+        return this.subscriberService.getAllSubscribersByClientsID(loggedUser.getId(),pageable);
     }
 
     //get subscriber by id for a client
