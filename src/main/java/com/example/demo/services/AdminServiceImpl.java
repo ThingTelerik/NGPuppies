@@ -161,7 +161,7 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
         Admin saveAdmin = adminRepository.save(admin);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/admins/ {username}")
+                .fromCurrentContextPath().path("/admins/{username}")
                 .buildAndExpand(saveAdmin.getUsername()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));

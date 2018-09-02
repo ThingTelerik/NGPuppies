@@ -34,18 +34,17 @@ public class AdminController {
         this.clientService= clientService;
     }
 
-
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-        ResponseEntity<?> response = null;
-        try {
-            response = adminService.authenticateClient(loginRequest);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        return response;
-    }
-
+    /**
+     *
+     * @param signUpAdminRequest
+     * @return
+     * {
+     * "name": "xxxxxx",
+     * "username": "xxxxx",
+     * "password" :"xxxxxxx",
+     * "email":"xxxxx@xxx.xx"
+     * }
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registerClient(@Valid @RequestBody SignupAdminRequest signUpAdminRequest) {
         ResponseEntity<?> result = null;
@@ -57,6 +56,34 @@ public class AdminController {
         return result;
     }
 
+    /**
+     *
+     * @param loginRequest
+     * @return
+     *
+     * {
+     * "username": "xxxxxxxx",
+     * "password" :"xxxxxx"
+     *
+     * }
+     */
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
+        ResponseEntity<?> response = null;
+        try {
+            response = adminService.authenticateClient(loginRequest);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return response;
+    }
+
+
+    /**
+     *
+     * @return
+     *  returns all admins
+     */
     @GetMapping(value = "all")
     public ResponseEntity<List<User>> getAllArticles() {
         List<User> responseUserList = new ArrayList<>();
@@ -64,6 +91,7 @@ public class AdminController {
         for (int i = 0; i < usersList.size(); i++) {
             User user = new User();
             BeanUtils.copyProperties(usersList.get(i), user);
+            user.setId(usersList.get(i).getId());
             responseUserList.add(user);
         }
         return new ResponseEntity<List<User>>(responseUserList, HttpStatus.OK);
