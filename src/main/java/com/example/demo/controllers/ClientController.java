@@ -6,6 +6,7 @@ import com.example.demo.model.SignUpClientRequest;
 import com.example.demo.security.CurrentLoggedUser;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.services.ClientServiceImpl;
+import com.example.demo.services.base.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,22 +20,25 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class ClientController {
 
-    @Autowired
-    private ClientServiceImpl clientService;
+    private ClientService clientService;
 
-    //TODO fix
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-        ResponseEntity<?> response = null;
-        try {
-            response = clientService.authenticateClient(loginRequest);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        return response;
+    @Autowired
+    public ClientController(ClientService clientService){
+        this.clientService = clientService;
     }
 
-    //Register new client
+    /**
+     *
+     * @param signUpClientRequest
+     * @return
+     * {
+     * "name": "FiBank",
+     * "username": "fibank",
+     * "password": "123456789",
+     * "eik": "5487984856"
+     *
+     * }
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
         ResponseEntity<?> result = null;
@@ -46,15 +50,40 @@ public class ClientController {
         return result;
     }
 
-    //TODO METHOD GETTING BANK BY ID
+    /**
+     *
+      * @param loginRequest
+     * @return
+     * {
+     * "username": "fibank",
+     * "password": "123456789"
+     * }
+     */
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
+        ResponseEntity<?> response = null;
+        try {
+            response = clientService.authenticateClient(loginRequest);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        return response;
+    }
 
-
-
-    //Get all clients
+    /**
+     *
+     * @param pageable
+     * @return
+     *
+     * get all users with client role
+     *
+     */
     @GetMapping("/clients")
     public Page<Client> getAllClients(Pageable pageable) {
         return clientService.getAll(pageable);
     }
+
+
 
     //works ->add auth token in authorization header when testing
     @GetMapping("/currentUser")

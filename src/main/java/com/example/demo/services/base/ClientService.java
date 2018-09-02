@@ -1,6 +1,8 @@
 package com.example.demo.services.base;
 
 import com.example.demo.entities.Client;
+import com.example.demo.model.LoginRequest;
+import com.example.demo.model.SignUpClientRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,4 +25,8 @@ public interface ClientService {
     Client updateClient(Long clientID, Client postRequest);
 
     ResponseEntity<?> deleteClientById(Long clientID);
+
+    ResponseEntity<?> registerClient(SignUpClientRequest signUpClientRequest);
+
+    ResponseEntity<?> authenticateClient(LoginRequest loginRequest);
 }

@@ -52,4 +52,9 @@ public class UserServiceImpl implements UserService, GenericService<User, String
     public User findUserById(Long aLong) {
         return userRepository.findUserById(aLong);
     }
+
+    @Override
+    public User getByUsername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
 }

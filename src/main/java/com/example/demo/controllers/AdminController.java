@@ -98,6 +98,10 @@ public class AdminController {
     }
 
 
+
+
+
+
     //curl http://localhost:8080/api/auth/admin/deleteClient/{username)
     //needs better implementation maybe
     @DeleteMapping("/deleteClient/{username}")
