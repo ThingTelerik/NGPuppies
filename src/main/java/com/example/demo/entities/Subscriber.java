@@ -35,7 +35,7 @@ public class Subscriber {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name="bank_id")
+    @JoinColumn(name = "bank_id")
     @JsonIgnore
     private Client bank;
 
@@ -47,7 +47,7 @@ public class Subscriber {
     @JsonIgnore
     private Collection<Services> services;
 
-    public Subscriber(){
+    public Subscriber() {
 
     }
 
@@ -107,7 +107,7 @@ public class Subscriber {
         this.bank = bank;
     }
 
-    public void addService(Services services){
+    public void addService(Services services) {
         this.services.add(services);
     }
 

@@ -36,41 +36,35 @@ public class SubscriberController {
         return this.subscriberService.createSubscriberByClientId(clientID, subscriber);
     }
 
-    //get all subscribers by client id
-    @GetMapping("/clients/{clientID}/subscribers")
-    public Page<Subscriber> getAllSubscriersByClientId(@PathVariable (value = "clientID") Long clientID,
-                                                       Pageable pageable) {
-        return subscriberService.getAllSubscribersByClientsID(clientID,pageable);
-    }
 
     //works!
-    @GetMapping("/client/subscribers")
+    @GetMapping("/clients/subscribers")
     public Page<Subscriber> getAllSubscriersByCurrentLoggedClient(@CurrentLoggedUser CustomUserDetails loggedUser,Pageable pageable) {
         return this.subscriberService.getAllSubscribersByClientsID(loggedUser.getId(),pageable);
     }
 
     //get subscriber by id for a client
-    @GetMapping("/clients/{clientID}/{subscriberId}")
-    public Subscriber getSubscriberByID(@PathVariable (value = "clientID") Long clientID, @PathVariable(value = "subscriberId") Integer subscriberId){
-        return this.subscriberService.getSubscriberByID(clientID, subscriberId);
+    @GetMapping("/clients/{subscriberId}")
+    public Subscriber getSubscriberByID(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberId") Integer subscriberId){
+        return this.subscriberService.getSubscriberByID(loggedUser.getId(), subscriberId);
     }
 
     //update subscriber by id for a given cient(by id)
-    @PutMapping("/clients/{clientID}/subscribers/{subscriberID}")
-    public Subscriber updateSubscriber(@PathVariable (value = "clientID") Long clientID,
+    @PutMapping("/clients/subscribers/{subscriberID}")
+    public Subscriber updateSubscriber(@CurrentLoggedUser CustomUserDetails loggedUser,
                                        @PathVariable (value = "subscriberID") Integer sID,
                                        @Valid @RequestBody Subscriber subscriberRequest) {
 
-        return this.subscriberService.updateSubscriberByClientID(clientID,sID,subscriberRequest);
+        return this.subscriberService.updateSubscriberByClientID(loggedUser.getId(),sID,subscriberRequest);
 
     }
 
     //delete subscriber for a given client
-    @DeleteMapping("/clients/{clientID}/subscribers/{subscriberID}")
-    public ResponseEntity<?> deleteComment(@PathVariable (value = "clientID") Long clientID,
+    @DeleteMapping("/clients/subscribers/{subscriberID}")
+    public ResponseEntity<?> deleteComment(@CurrentLoggedUser CustomUserDetails loggedUser,
                                            @PathVariable (value = "subscriberID") Integer subscriberID) {
 
-        return subscriberService.deleteSubscriberByClientID(clientID,subscriberID);
+        return subscriberService.deleteSubscriberByClientID(loggedUser.getId(),subscriberID);
 
 
 
