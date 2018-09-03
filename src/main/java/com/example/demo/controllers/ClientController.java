@@ -84,8 +84,12 @@ public class ClientController {
     }
 
 
-
-    //works ->add auth token in authorization header when testing
+    /**
+     *
+     * @param activeUser
+     * @return
+     * Get current logged user by passing the auth token in autauthorization header
+     */
     @GetMapping("/currentUser")
     public Client getCurrentLoggedUser(@CurrentLoggedUser CustomUserDetails activeUser) {
         Client client = clientService.getClientByUsername(activeUser.getUsername());
@@ -93,25 +97,30 @@ public class ClientController {
         return client;
     }
 
-    //TODO POJO CLIENT CLASS
-    //update client by id
+    /**
+     *
+     * @param clientID
+     * @param postRequest
+     * @return
+     * update client by passing: username, password and eik
+     */
     @PutMapping("/clients/{clientID}")
     public Client updateClient(@PathVariable("clientID") Long clientID, @Valid @RequestBody Client postRequest) {
        return this.clientService.updateClient(clientID, postRequest);
 
     }
 
-    //delete cient by id
+    /**
+     *
+     * @param postId
+     * @return
+     * delete client by passing the client id in the url
+     */
     @DeleteMapping("/clients/{clientID}")
     public ResponseEntity<?> deleteClient(@PathVariable("clientID") Long postId) {
 
         return clientService.deleteClientById(postId);
 
     }
-
-
-
-
-
 
 }

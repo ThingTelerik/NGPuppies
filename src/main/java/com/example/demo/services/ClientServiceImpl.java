@@ -112,13 +112,14 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
         return clientRepository.findAll(pageable);
     }
 
-    //update cient
+    //update client
     @Override
     public Client updateClient(Long clientID, Client postRequest) {
         return clientRepository.findById(clientID).map(post -> {
             post.setUsername(postRequest.getUsername());
-            post.setPassword(postRequest.getPassword());
+            post.setPassword(passwordEncoder.encode(postRequest.getPassword()));
             post.setEIK(postRequest.getEIK());
+
 
             return clientRepository.save(post);
         }).orElseThrow(() -> new ResourceNotFoundException("Client", "id", clientID));
