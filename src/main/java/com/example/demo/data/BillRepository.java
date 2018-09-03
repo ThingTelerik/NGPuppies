@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long> {
@@ -31,4 +32,5 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findAllBySubscriber_IdAndPaymentDateIsAfterAndPaymentDateIsBefore(Integer subscriberId, LocalDate startDate, LocalDate endDate);
     //List<Bill> findAllBySubscriber_IdAndService_NameAAndPaymentDateIsNotNull(Integer subscriberID,String serviceName, LocalDate payDate);
 
+    Optional<Bill> findBySubscriber_IdAndIdAndPaymentDateIsNull(Integer subscriberId,Long billId);
 }

@@ -39,13 +39,21 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Page<Bill> getAllUnpaidBills(Integer subscriberId, Pageable pageable) {
-        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNull(subscriberId,pageable);
+    public Page<Bill> getAllUnpaidBills(Long clientID,Integer subscriberId, Pageable pageable) {
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(clientID,subscriberId);
+        if(mySubscriber==null){
+            return null;
+        }
+        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNull(mySubscriber.getId(),pageable);
     }
 
     @Override
-    public Page<Bill> getAllPaidBills(Integer subscriberId, Pageable pageable) {
-        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(subscriberId, pageable);
+    public Page<Bill> getAllPaidBills(Long clientID,Integer subscriberId, Pageable pageable) {
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(clientID,subscriberId);
+        if(mySubscriber==null){
+            return null;
+        }
+        return this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNotNull(mySubscriber.getId(), pageable);
     }
 
     /**
@@ -73,6 +81,22 @@ public class BillService implements IBillService {
         newBill.setPaymentDate(null);
 
         return this.billRepository.save(newBill);
+
+    }
+
+    @Override
+    public Bill payBill(long id, Integer subscriberId, Long billId) {
+
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(id,subscriberId);
+        if(mySubscriber==null){
+            return null;
+        }
+       return this.billRepository.findBySubscriber_IdAndIdAndPaymentDateIsNull(subscriberId,billId)
+               .map(bill->{
+                   bill.setPaymentDate(LocalDate.now());
+                   return billRepository.save(bill);
+               })
+                .orElseThrow(()->new ResourceNotFoundException("No such bill","Bill Id",billId));
 
     }
 

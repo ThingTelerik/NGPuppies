@@ -52,6 +52,10 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
     @Override
     public Collection<Services> getAllServicesBySubscriber(Long clientId, Integer subscriberID) {
         Subscriber mySubscriber = this.subscriberService.getSubscriberByID(clientId,subscriberID);
+        if(mySubscriber==null){
+            return null;
+        }
+
        return mySubscriber.getServices();
     }
 

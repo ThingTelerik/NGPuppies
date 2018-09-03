@@ -13,9 +13,11 @@ public interface IBillService {
 
     List<Bill> TenMostResentPaidBillsForASubscriber(String bankName);
 
-    Page<Bill> getAllUnpaidBills(Integer subscriberId, Pageable pageable);
+    Page<Bill> getAllUnpaidBills(Long clientId,Integer subscriberId, Pageable pageable);
 
-    Page<Bill> getAllPaidBills(Integer subscriberId, Pageable pageable);
+    Page<Bill> getAllPaidBills(Long clientId,Integer subscriberId, Pageable pageable);
 
     Bill createUnpaidBill(Integer subscriberID, Bill newBill);
+
+    Bill payBill(long id, Integer subscriberId, Long billId);
 }

@@ -66,7 +66,13 @@ public class ServicesController {
         return servicesService.createServiceBySubscriberID(loggedUser.getId(),subscriberId,newService);
     }
 
-    //Get services by Subscriber
+    /**
+     *
+     * @param loggedUser
+     * @param subscriberID
+     * @return
+     * Get all services for a subscriber of the current logged user
+     */
     @GetMapping("/clients/subscribers/{subscriberID}/services")
     Collection<Services> getAllServicesBySubscriber(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberID") Integer subscriberID ){
         return servicesService.getAllServicesBySubscriber(loggedUser.getId(),subscriberID);
@@ -77,11 +83,6 @@ public class ServicesController {
     List<ServicesDto> allPaidServicesBySubscriber(@PathVariable(value = "phone") String phone){
         return servicesService.allPaidServicesBySubscriber(phone);
     }
-
-
-
-
-
 
     @GetMapping("/services/{name}")
     Services getByName(@PathVariable (value = "name") String name){
