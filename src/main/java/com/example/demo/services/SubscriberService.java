@@ -28,11 +28,6 @@ public class SubscriberService implements ISubscriberService {
     }
 
 
-    @Override
-    public Subscriber findById(Long SubscriberId) {
-        return subscriberRepository.findById(SubscriberId);
-    }
-
     //Get all subscribers for a given client
     @Override
     public Page<Subscriber> getAllSubscribersByClientsID(Long clientID, Pageable pageable) {
@@ -58,14 +53,20 @@ public class SubscriberService implements ISubscriberService {
         if(!clientRepository.existsById(clientID)) {
             throw new ResourceNotFoundException("Client ","Not found",clientID);
         }
-        return subscriberRepository.findById(sID).map(subscriber -> {
-            subscriber.setAddress(subscriberRequest.getAddress());
-            subscriber.setEGN(subscriberRequest.getEGN());
-            subscriber.setFirstName(subscriberRequest.getFirstName());
-            subscriber.setLastName(subscriberRequest.getLastName());
-            subscriber.setPhoneNumber(subscriberRequest.getPhoneNumber());
-            return subscriberRepository.save(subscriber);
-        }).orElseThrow(() -> new ResourceNotFoundException("Subscriber","doesn't exist",sID));
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(clientID,sID);
+        if(mySubscriber==null){
+            throw new ResourceNotFoundException("Subscriber with such id doesn't exist for the current client","id",sID);
+        }
+        else {
+            return subscriberRepository.findById(sID).map(subscriber -> {
+                subscriber.setAddress(subscriberRequest.getAddress());
+                subscriber.setEGN(subscriberRequest.getEGN());
+                subscriber.setFirstName(subscriberRequest.getFirstName());
+                subscriber.setLastName(subscriberRequest.getLastName());
+                subscriber.setPhoneNumber(subscriberRequest.getPhoneNumber());
+                return subscriberRepository.save(subscriber);
+            }).orElseThrow(() -> new ResourceNotFoundException("Subscriber", "doesn't exist", sID));
+        }
     }
 
 
@@ -76,10 +77,16 @@ public class SubscriberService implements ISubscriberService {
             throw new ResourceNotFoundException("ClientID ","not Found:",clientID);
         }
 
-        return subscriberRepository.findById(subscriberID).map(subscriber -> {
-            subscriberRepository.delete(subscriber);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("Subscriber ","not Found:",subscriberID));
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(clientID,subscriberID);
+        if(mySubscriber==null){
+            throw new ResourceNotFoundException("Subscriber with such id doesn't exist for the current client","id",subscriberID);
+        }
+        else {
+            return subscriberRepository.findById(subscriberID).map(subscriber -> {
+                subscriberRepository.delete(subscriber);
+                return ResponseEntity.ok().build();
+            }).orElseThrow(() -> new ResourceNotFoundException("Subscriber ", "not Found:", subscriberID));
+        }
     }
 
     @Override
