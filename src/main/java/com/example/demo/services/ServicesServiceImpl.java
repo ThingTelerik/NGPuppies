@@ -11,6 +11,7 @@ import com.example.demo.model.ServicesDto;
 import com.example.demo.services.base.GenericService;
 import com.example.demo.services.base.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -56,8 +57,20 @@ public class ServicesServiceImpl implements ServicesService, GenericService<Serv
 
     @Override
     public Services createServiceBySubscriberID(Long clientId, Integer subscriberId, Services newService) {
-        //TODO implement method
-        return null;
+        Services givenService = this.serviceRepository.findByName(newService.getName());
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(clientId,subscriberId);
+        if(mySubscriber==null||givenService==null){
+            throw new ResourceNotFoundException("No such service or subscriber","Service name or subscriber id",newService.getName()+subscriberId);
+        }
+        else {
+
+            if(!mySubscriber.getServices().contains(givenService)){
+                mySubscriber.getServices().add(givenService);
+                return givenService;
+            }
+
+        }
+        return givenService;
     }
 
     @Override
