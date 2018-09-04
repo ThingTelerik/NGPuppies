@@ -123,4 +123,10 @@ public class ClientController {
 
     }
 
+    //Testing the HttpRequest
+    @RequestMapping("/hellomessage")
+    public @ResponseBody String greeting() {
+        return "Hello World";
+    }
+
 }
