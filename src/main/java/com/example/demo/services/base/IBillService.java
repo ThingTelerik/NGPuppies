@@ -20,4 +20,6 @@ public interface IBillService {
     Bill createUnpaidBill(Integer subscriberID, Bill newBill);
 
     Bill payBill(long id, Integer subscriberId, Long billId);
+
+    List<Bill> payAllUnpaidBills(long id, Integer subscriberId);
 }

@@ -91,6 +91,14 @@ public class BillController {
 
     }
 
+    @PutMapping("/{subscriberId}/payAllUnpaidBills")
+    public List<Bill> payAllUnpaidBills(@CurrentLoggedUser CustomUserDetails loggedUser,
+                        @PathVariable(value = "subscriberId") Integer subscriberId){
+        return this.billService.payAllUnpaidBills(loggedUser.getId(),subscriberId);
+
+    }
+
+
 
 
     //http://localhost:8080/api/clients/lastTenBills?bankName=DSK ->works

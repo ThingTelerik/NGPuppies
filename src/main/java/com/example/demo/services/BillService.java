@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -100,5 +101,28 @@ public class BillService implements IBillService {
 
     }
 
+    @Override
+    public List<Bill> payAllUnpaidBills(long id, Integer subscriberId) {
+        List<Bill> afterPayment = new ArrayList<>();
+        Subscriber mySubscriber = this.subscriberRepository.findByBank_IdAndId(id, subscriberId);
+        if (mySubscriber == null) {
+            throw new ResourceNotFoundException("Couldn't find subscriber with such id", "id", subscriberId);
+        } else {
+            List<Bill> unpaidBills = this.billRepository.findAllBySubscriber_IdAndPaymentDateIsNull(subscriberId);
 
-}
+            for (Bill bill: unpaidBills
+                 ) {
+                bill.setPaymentDate(LocalDate.now());
+
+                this.billRepository.save(bill);
+                afterPayment.add(bill);
+            }
+
+
+            }
+            return  afterPayment;
+
+        }
+    }
+
+

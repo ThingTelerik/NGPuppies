@@ -26,6 +26,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> TenMostResentPaidBillsForASubscriber(String BankName);
 
     Page<Bill> findAllBySubscriber_IdAndPaymentDateIsNull(Integer subscriberID, Pageable pageble);
+    List<Bill> findAllBySubscriber_IdAndPaymentDateIsNull(Integer subscriberID);
 
     Page<Bill> findAllBySubscriber_IdAndPaymentDateIsNotNull(Integer subscriberID,Pageable pageable);
 
