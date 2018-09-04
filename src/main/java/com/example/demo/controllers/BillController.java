@@ -54,14 +54,36 @@ public class BillController {
     }
 
     /**
+     * create unpaid bill by passing subscriber id in path variable and bill in body request
+     * startdate enddate and paymentday are set automatically
+     * example:
+     * {
+     *             "service": {
+     *                 "name": "Telephone"
+     *             },
+     *             "amount": 500,
+     *             "currency": "BGN"
+     * }
+     * if the suscriber has no such service in his list of services exception is thrown
+     * @param subscriberID
+     * @param newBill
+     * @return
+     */
+    @PostMapping("/{subscriberId}/bills")
+    public Bill createUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID,@RequestBody Bill newBill){
+        return billService.createUnpaidBill(subscriberID,newBill);
+    }
+
+    /**
      * Pay bill by subscriber id that belongs to the current logged user
-     * The date is set for the date when is the request send
+     * The date is set for the date when the request is send
      * @param loggedUser
      * @param subscriberId
      * @param billId
      * @return
      */
-    @GetMapping("/{subscriberId}/payBill/{billId}")
+    @PutMapping("/{subscriberId}/payBill/{billId}")
+
     public Bill payBill(@CurrentLoggedUser CustomUserDetails loggedUser,
                         @PathVariable(value = "subscriberId") Integer subscriberId,
                         @PathVariable(value = "billId") Long billId){
@@ -77,8 +99,5 @@ public class BillController {
         return billService.TenMostResentPaidBillsForASubscriber(bankName);
     }
 
-    @PostMapping("/{subscriberId}/bills")
-    public Bill createUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID,@RequestBody Bill newBill){
-        return billService.createUnpaidBill(subscriberID,newBill);
-    }
+
 }
