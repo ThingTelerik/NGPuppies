@@ -91,6 +91,12 @@ public class BillController {
 
     }
 
+    /**
+     * Pay all unpaid bills only for a subscriber that belongs to the current logged user
+     * @param loggedUser
+     * @param subscriberId
+     * @return
+     */
     @PutMapping("/{subscriberId}/payAllUnpaidBills")
     public List<Bill> payAllUnpaidBills(@CurrentLoggedUser CustomUserDetails loggedUser,
                         @PathVariable(value = "subscriberId") Integer subscriberId){
