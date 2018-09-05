@@ -22,4 +22,6 @@ public interface IBillService {
     Bill payBill(long id, Integer subscriberId, Long billId);
 
     List<Bill> payAllUnpaidBills(long id, Integer subscriberId);
+
+    Bill createPureUnpaidBill(Integer subscriberID, Bill newBill) throws Exception;
 }
