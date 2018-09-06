@@ -81,6 +81,7 @@ public class ClientServiceTests {
         // Verification
         Assert.assertNull(user);
 
+
     }
 
     @Test
@@ -95,4 +96,21 @@ public class ClientServiceTests {
         Assert.assertNull(user);
 
     }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateBank_BankNameAndEIKAndPasswordAreUpdated() {
+        Client updatableBank = new Client("bank2","789465","445678");
+
+
+        // Method call
+        clientService.updateClient(BANK_ONE_ID,updatableBank);
+
+        // Verification
+        Assert.assertEquals(updatableBank.getEIK(),bank.getEIK());
+        Assert.assertEquals(updatableBank.getPassword(),bank.getPassword());
+        Assert.assertEquals(updatableBank.getUsername(),bank.getUsername());
+        Mockito.verify(mockClientRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(mockClientRepository);
+    }
+
 }
