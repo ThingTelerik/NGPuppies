@@ -22,6 +22,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ClientServiceTests {
 
     private static final long BANK_ONE_ID = 1L;
+    private static final long MISSING_ID= 2L;
+
 
     @Mock
     private ClientRepository mockClientRepository;
@@ -112,5 +114,23 @@ public class ClientServiceTests {
         Mockito.verify(mockClientRepository, Mockito.times(1)).findById(Mockito.anyLong());
         Mockito.verifyNoMoreInteractions(mockClientRepository);
     }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateBank_BankIdNotFoundAndBankNotUpdated() {
+        Client updatableBank = new Client("bank2","789465","445678");
+
+
+        // Method call
+        clientService.updateClient(MISSING_ID,updatableBank);
+
+        // Verification
+        Assert.assertNotEquals(updatableBank.getEIK(),bank.getEIK());
+        Assert.assertNotEquals(updatableBank.getPassword(),bank.getPassword());
+        Assert.assertNotEquals(updatableBank.getUsername(),bank.getUsername());
+        Mockito.verify(mockClientRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(mockClientRepository);
+    }
+
+
 
 }
