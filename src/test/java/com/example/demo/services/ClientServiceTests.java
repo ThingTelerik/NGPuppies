@@ -8,6 +8,7 @@ import com.example.demo.data.ClientRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
+import com.example.demo.exceptions.ResourceNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,4 +59,14 @@ public class ClientServiceTests {
         Mockito.verifyNoMoreInteractions(mockClientRepository);
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void findOneAndUserIsNull() {
+        // Method call
+        Client user = clientService.getClientById(BANK_ONE_ID);
+
+        // Verification
+        Assert.assertNull(user);
+        Mockito.verify(mockClientRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verifyNoMoreInteractions(mockClientRepository);
+    }
 }
