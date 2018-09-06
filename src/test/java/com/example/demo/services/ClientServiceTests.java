@@ -82,4 +82,17 @@ public class ClientServiceTests {
         Assert.assertNull(user);
 
     }
+
+    @Test
+    public void createBankWithExistingUserName_bankShouldBeNull() {
+        // Data preparation
+        Mockito.when(mockClientRepository.findByUsername("bank1")).thenReturn(bank);
+
+        // Method call
+        Client user = clientService.create(bank);
+
+        // Verification
+        Assert.assertNull(user);
+
+    }
 }
