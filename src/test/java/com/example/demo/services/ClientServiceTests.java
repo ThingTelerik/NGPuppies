@@ -69,4 +69,17 @@ public class ClientServiceTests {
         Mockito.verify(mockClientRepository, Mockito.times(1)).findById(Mockito.anyLong());
         Mockito.verifyNoMoreInteractions(mockClientRepository);
     }
+
+    @Test
+    public void createBankWithExistingEik_bankIsNull() {
+        // Data preparation
+        Mockito.when(mockClientRepository.findByEik("12346")).thenReturn(bank);
+
+        // Method call
+        Client user = clientService.create(bank);
+
+        // Verification
+        Assert.assertNull(user);
+
+    }
 }
