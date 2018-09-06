@@ -5,7 +5,6 @@ import com.example.demo.data.RoleRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
-import com.example.demo.entities.User;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.loads.ApiResponse;
 import com.example.demo.loads.JwtAuthResponse;
@@ -192,6 +191,12 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthResponse(jwt));
 
+    }
+
+    @Override
+    public Client getClientById(Long clientId) {
+        return this.clientRepository.findById(clientId)
+                .orElseThrow(()->new ResourceNotFoundException("Client not found","id",clientId));
     }
 
 
