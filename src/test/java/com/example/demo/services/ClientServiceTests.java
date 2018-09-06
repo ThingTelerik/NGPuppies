@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.data.ClientRepository;
@@ -9,6 +10,7 @@ import com.example.demo.entities.Client;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
 import com.example.demo.exceptions.ResourceNotFoundException;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientServiceTests {
@@ -131,6 +135,20 @@ public class ClientServiceTests {
         Mockito.verifyNoMoreInteractions(mockClientRepository);
     }
 
+    @Test
+    public void repoContains3elements_getAll_return3elements() {
+        // Data preparation
+        List<Client> users = Arrays.asList(bank, bank, bank);
+        Mockito.when(mockClientRepository.findAll()).thenReturn(users);
+
+        // Method call
+        List<Client> userList = clientService.getAll();
+
+        // Verification
+        Assert.assertThat(userList, Matchers.hasSize(3));
+        Mockito.verify(mockClientRepository, Mockito.times(1)).findAll();
+        Mockito.verifyNoMoreInteractions(mockClientRepository);
+    }
 
 
 }
