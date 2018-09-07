@@ -17,6 +17,7 @@ public class SmokeTest {
     @Autowired
 
     private AdminController adminController;
+
     @Autowired
 
     private BillController billController;

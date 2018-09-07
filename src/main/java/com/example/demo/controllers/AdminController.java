@@ -84,7 +84,7 @@ public class AdminController {
      * @return
      *  returns all admins
      */
-    @GetMapping(value = "all")
+    @GetMapping(value = "/all")
     public ResponseEntity<List<User>> getAllArticles() {
         List<User> responseUserList = new ArrayList<>();
         List<User> usersList = userService.getAll();
