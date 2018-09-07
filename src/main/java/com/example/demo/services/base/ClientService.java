@@ -29,4 +29,6 @@ public interface ClientService {
     ResponseEntity<?> registerClient(SignUpClientRequest signUpClientRequest);
 
     ResponseEntity<?> authenticateClient(LoginRequest loginRequest);
+
+    Client getClientById(Long clientId);
 }

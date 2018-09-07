@@ -123,6 +123,29 @@ public class BillService implements IBillService {
             return  afterPayment;
 
         }
+
+    @Override
+    public Bill createPureUnpaidBill(Integer subscriberID, Bill newBill) throws Exception {
+        Services givenService = newBill.getService();
+        String checkedName = givenService.getName();
+        Services checkService =  this.serviceRepository.findByName(checkedName);
+        Subscriber billSubscriber =  this.subscriberRepository.findById(subscriberID).
+                orElseThrow(()->new ResourceNotFoundException("Subscriber","id",subscriberID));
+        if(!billSubscriber.getServices().contains(checkService)){
+            throw new ResourceNotFoundException("This subscriber has no such service","service",givenService);
+        }
+        if(newBill.getStartDate().isAfter(newBill.getEndDate())){
+            throw new Exception("The start date should be before the end date!");
+        }
+        else {
+            newBill.setSubscriber(billSubscriber);
+            newBill.setService(checkService);
+            newBill.setPaymentDate(null);
+
+            return this.billRepository.save(newBill);
+        }
+
     }
+}
 
 

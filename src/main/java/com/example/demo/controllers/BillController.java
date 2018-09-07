@@ -53,7 +53,31 @@ public class BillController {
 
     }
 
-    /**
+    /**Create unpaid bill by passing start and end date
+     * create unpaid bill by passing subscriber id in path variable and bill in body request
+     * paymentday is set automatically
+     * example:
+     * {
+     *             "service": {
+     *                 "id": 1,
+     *                 "name": "Telephone"
+     *             },
+     *             "startDate": "2018-07-19",
+     *             "endDate": "2017-08-19",
+     *             "amount": 250,
+     *             "currency": "BGN"
+     * }
+     * if the suscriber has no such service in his list of services exception is thrown
+     * @param subscriberID
+     * @param newBill
+     * @return
+     */
+    @PostMapping("/{subscriberId}/createBill")
+    public Bill createPureUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID,@RequestBody Bill newBill) throws Exception {
+        return billService.createPureUnpaidBill(subscriberID,newBill);
+    }
+
+    /**HARDCODED START-, ENDDATE AND PAYMENT DATE
      * create unpaid bill by passing subscriber id in path variable and bill in body request
      * startdate enddate and paymentday are set automatically
      * example:

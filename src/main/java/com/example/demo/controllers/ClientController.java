@@ -123,10 +123,10 @@ public class ClientController {
 
     }
 
-    //Testing the HttpRequest
-    @RequestMapping("/hellomessage")
-    public @ResponseBody String greeting() {
-        return "Hello World";
+    @GetMapping("clients/{clientId}")
+    public Client getClientByID(@PathVariable(value = "clientId") Long clientId){
+        return this.clientService.getClientById(clientId);
     }
+
 
 }
