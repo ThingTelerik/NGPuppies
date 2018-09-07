@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AdminServiceTests {
 
@@ -56,6 +59,42 @@ public class AdminServiceTests {
 
         Assert.assertNotNull(mockRepository.findById(newAdmin.getId()));
     }
+
+    @Test(expected = NullPointerException.class)
+    public void passNullToCreateNewAdminMethod_AssertNoAdminIsCreated(){
+        Admin missing = null;
+
+        service.create(missing);
+
+        Assert.assertNull(mockRepository.findById(missing.getId()));
+    }
+
+    @Test
+    public void getAdminByEmailMethodCalled_returnAdminByEmail(){
+        Mockito.when(mockRepository.findByEmail("admin@abv.bg")).thenReturn(admin);
+
+       Admin currentAdmin= service.getAdminByEmail("admin@abv.bg");
+
+       Assert.assertEquals(admin,currentAdmin);
+    }
+
+
+    @Test
+    public void repoContains3elements_getAll_return3elements() {
+        // Data preparation
+        List<Admin> users = Arrays.asList(admin, admin, admin);
+        Mockito.when(mockRepository.findAll()).thenReturn(users);
+
+        // Method call
+        List<Admin> userList = service.getAll();
+
+        // Verification
+        Assert.assertThat(userList, Matchers.hasSize(3));
+        Mockito.verify(mockRepository, Mockito.times(1)).findAll();
+        Mockito.verifyNoMoreInteractions(mockRepository);
+
+    }
+
 
 
 }
