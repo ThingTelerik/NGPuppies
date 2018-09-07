@@ -1,12 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.data.AdminRepository;
-import com.example.demo.data.ClientRepository;
 import com.example.demo.entities.Admin;
-import com.example.demo.entities.Client;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.RoleType;
-import com.example.demo.exceptions.ResourceNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -94,6 +91,7 @@ public class AdminServiceTests {
         Mockito.verifyNoMoreInteractions(mockRepository);
 
     }
+
 
 
 
