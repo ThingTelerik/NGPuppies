@@ -48,8 +48,13 @@ public class AdminServiceTests {
     }
 
     @Test
-    public void createNewAdmin_newAdminIsCreated(){
-        service.create(admin);
+    public void createNewAdmin_newAdminIsSavedToTheRepository(){
+
+        Admin newAdmin = new Admin("user","123456","user@abv.bg");
+
+        service.create(newAdmin);
+
+        Assert.assertNotNull(mockRepository.findById(newAdmin.getId()));
     }
 
 
