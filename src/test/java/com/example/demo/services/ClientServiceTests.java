@@ -79,7 +79,7 @@ public class ClientServiceTests {
     @Test
     public void createBankWithExistingEik_bankIsNull() {
         // Data preparation
-        Mockito.when(mockClientRepository.findByEik("12346")).thenReturn(bank);
+        //Mockito.when(mockClientRepository.findByEik("12346")).thenReturn(bank);
 
         // Method call
         Client user = clientService.create(bank);
@@ -93,7 +93,7 @@ public class ClientServiceTests {
     @Test
     public void createBankWithExistingUserName_bankShouldBeNull() {
         // Data preparation
-        Mockito.when(mockClientRepository.findByUsername("bank1")).thenReturn(bank);
+        //Mockito.when(mockClientRepository.findByUsername("bank1")).thenReturn(bank);
 
         // Method call
         Client user = clientService.create(bank);
