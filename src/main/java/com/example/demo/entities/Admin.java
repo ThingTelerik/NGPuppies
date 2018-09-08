@@ -3,6 +3,7 @@ package com.example.demo.entities;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.validation.constraints.Email;
 
 @Entity
 @DiscriminatorValue("ADMIN")

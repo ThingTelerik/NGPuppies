@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -19,17 +20,17 @@ public class Subscriber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
+    @NotNull
     private String phoneNumber;
 
     //personal details
-    @NotBlank
+    @NotNull
     private String firstName;
 
-    @NotBlank
+    @NotNull
     private String lastName;
 
-    @NotBlank
+    @NotNull
     private String EGN;
 
     private String address;

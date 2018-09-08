@@ -10,6 +10,7 @@ import com.example.demo.services.base.IBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserPrincipal;
@@ -33,6 +34,7 @@ public class BillController {
      * @param pageable
      * @return
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/{subscriberId}/bills")
     public Page<Bill> getAllUnpaidBills(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberId") Integer subscriberId,
                                         Pageable pageable) {
@@ -46,6 +48,7 @@ public class BillController {
      * @param pageable
      * @return
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/{subscriberId}/paidbills")
     public Page<Bill> getAllPaidBills(@CurrentLoggedUser CustomUserDetails loggedUser,@PathVariable(value = "subscriberId") Integer subscriberId,
                                       Pageable pageable) {
@@ -72,6 +75,7 @@ public class BillController {
      * @param newBill
      * @return
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{subscriberId}/createBill")
     public Bill createPureUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID,@RequestBody Bill newBill) throws Exception {
         return billService.createPureUnpaidBill(subscriberID,newBill);
@@ -106,6 +110,7 @@ public class BillController {
      * @param billId
      * @return
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/{subscriberId}/payBill/{billId}")
 
     public Bill payBill(@CurrentLoggedUser CustomUserDetails loggedUser,
@@ -121,6 +126,7 @@ public class BillController {
      * @param subscriberId
      * @return
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/{subscriberId}/payAllUnpaidBills")
     public List<Bill> payAllUnpaidBills(@CurrentLoggedUser CustomUserDetails loggedUser,
                         @PathVariable(value = "subscriberId") Integer subscriberId){
@@ -132,6 +138,7 @@ public class BillController {
 
 
     //http://localhost:8080/api/clients/lastTenBills?bankName=DSK ->works
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/lastTenBills")
     public List<Bill> TenMostResentPaidBillsForASubscriber(@RequestParam(value = "bankName",required = true) String bankName){
         return billService.TenMostResentPaidBillsForASubscriber(bankName);

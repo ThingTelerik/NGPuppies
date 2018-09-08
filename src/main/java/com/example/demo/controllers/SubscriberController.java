@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
+@PreAuthorize("hasRole('CLIENT')")
 @RequestMapping("/api")
 public class SubscriberController {
    private ISubscriberService subscriberService;
@@ -45,6 +47,7 @@ public class SubscriberController {
      * }
      *
      */
+
     @PostMapping("/clients/subscribers")
     public Subscriber createSubscriber(@CurrentLoggedUser CustomUserDetails loggedUser,
                                        @Valid @RequestBody Subscriber subscriber) {
@@ -95,6 +98,7 @@ public class SubscriberController {
      *     "egn": "777777"
      * }
      */
+
     @PutMapping("/clients/subscribers/{subscriberID}")
     public Subscriber updateSubscriber(@CurrentLoggedUser CustomUserDetails loggedUser,
                                        @PathVariable (value = "subscriberID") Integer sID,
@@ -112,6 +116,7 @@ public class SubscriberController {
      * delete subscriber for current logged user
      * deleting subscribers which don't belong to the current user is impossible
      */
+
     @DeleteMapping("/clients/subscribers/{subscriberID}")
     public ResponseEntity<?> deleteComment(@CurrentLoggedUser CustomUserDetails loggedUser,
                                            @PathVariable (value = "subscriberID") Integer subscriberID) {

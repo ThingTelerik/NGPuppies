@@ -6,6 +6,7 @@ import com.example.demo.security.CurrentLoggedUser;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.services.base.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Service;
@@ -32,6 +33,7 @@ public class ServicesController {
      *   "name":"Telephone"
      * }
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/services")
     Services createService(@RequestBody ServicesDto newService){
         return this.servicesService.createService(newService);
@@ -61,6 +63,7 @@ public class ServicesController {
      * }
      * It is not possible if the passed subscriber doesn't belong to the logged user
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/clients/subscribers/{subscriberID}/services")
     Services createServiceBySubscriberID(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberID") Integer subscriberId,@RequestBody Services newService){
         return servicesService.createServiceBySubscriberID(loggedUser.getId(),subscriberId,newService);
@@ -73,12 +76,13 @@ public class ServicesController {
      * @return
      * Get all services for a subscriber of the current logged user
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/clients/subscribers/{subscriberID}/services")
     Collection<Services> getAllServicesBySubscriber(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberID") Integer subscriberID ){
         return servicesService.getAllServicesBySubscriber(loggedUser.getId(),subscriberID);
     }
 
-
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/allPaidBySub/{phone}")
     List<ServicesDto> allPaidServicesBySubscriber(@PathVariable(value = "phone") String phone){
         return servicesService.allPaidServicesBySubscriber(phone);

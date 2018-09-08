@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("api/auth/admin")
 public class AdminController {
 
@@ -58,29 +60,6 @@ public class AdminController {
 
     /**
      *
-     * @param loginRequest
-     * @return
-     *
-     * {
-     * "username": "xxxxxxxx",
-     * "password" :"xxxxxx"
-     *
-     * }
-     */
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-        ResponseEntity<?> response = null;
-        try {
-            response = adminService.authenticateClient(loginRequest);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        return response;
-    }
-
-
-    /**
-     *
      * @return
      *  returns all admins
      */
@@ -96,11 +75,6 @@ public class AdminController {
         }
         return new ResponseEntity<List<User>>(responseUserList, HttpStatus.OK);
     }
-
-
-
-
-
 
     //curl http://localhost:8080/api/auth/admin/deleteClient/{username)
     //needs better implementation maybe

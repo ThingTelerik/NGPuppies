@@ -135,7 +135,7 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
     }
 
     @Override
-    public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
+    public ResponseEntity<?> registerClient( SignUpClientRequest signUpClientRequest) {
         if (clientRepository.existsByEik(signUpClientRequest.getEik())) {
             return new ResponseEntity(new ApiResponse(false, "EIK already in use!"),
                     HttpStatus.BAD_REQUEST);
@@ -173,25 +173,6 @@ public class ClientServiceImpl implements ClientService, GenericService<Client, 
         return ResponseEntity.created(location).body(new ApiResponse(true, "Client successfully registered"));
     }
 
-    @Override
-    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-        Client u = clientRepository.findClientByUsername(loginRequest.getUsername());
-
-        UsernamePasswordAuthenticationToken authRequest = null;
-        if (u != null) {
-            authRequest = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), loginRequest.getPassword());
-        }
-
-        Authentication authentication = authenticationManager.authenticate(authRequest);
-
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(jwt));
-
-    }
 
     @Override
     public Client getClientById(Long clientId) {

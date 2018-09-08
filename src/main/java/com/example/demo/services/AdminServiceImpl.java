@@ -112,24 +112,8 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
 
     }
 
-    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
 
-
-        UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), loginRequest.getPassword());
-
-
-        Authentication authentication = authenticationManager.authenticate(authRequest);
-
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(jwt));
-
-    }
-
-    public ResponseEntity<?> registerAdmin(@Valid @RequestBody SignupAdminRequest signUpAdminRequest) {
+    public ResponseEntity<?> registerAdmin( SignupAdminRequest signUpAdminRequest) {
         if (adminRepository.existsByEmail(signUpAdminRequest.getEmail())) {
             return new ResponseEntity(new ApiResponse(false, "Email already in use!"),
                     HttpStatus.BAD_REQUEST);

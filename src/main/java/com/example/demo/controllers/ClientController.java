@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -39,6 +40,7 @@ public class ClientController {
      *
      * }
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<?> registerClient(@Valid @RequestBody SignUpClientRequest signUpClientRequest) {
         ResponseEntity<?> result = null;
@@ -50,25 +52,6 @@ public class ClientController {
         return result;
     }
 
-    /**
-     *
-      * @param loginRequest
-     * @return
-     * {
-     * "username": "fibank",
-     * "password": "123456789"
-     * }
-     */
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateClient(@Valid @RequestBody LoginRequest loginRequest) {
-        ResponseEntity<?> response = null;
-        try {
-            response = clientService.authenticateClient(loginRequest);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-        return response;
-    }
 
     /**
      *
@@ -78,6 +61,7 @@ public class ClientController {
      * get all users with client role
      *
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/clients")
     public Page<Client> getAllClients(Pageable pageable) {
         return clientService.getAll(pageable);
@@ -104,6 +88,7 @@ public class ClientController {
      * @return
      * update client by passing: username, password and eik
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/clients/{clientID}")
     public Client updateClient(@PathVariable("clientID") Long clientID, @Valid @RequestBody Client postRequest) {
        return this.clientService.updateClient(clientID, postRequest);
@@ -116,13 +101,14 @@ public class ClientController {
      * @return
      * delete client by passing the client id in the url
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/clients/{clientID}")
     public ResponseEntity<?> deleteClient(@PathVariable("clientID") Long postId) {
 
         return clientService.deleteClientById(postId);
 
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("clients/{clientId}")
     public Client getClientByID(@PathVariable(value = "clientId") Long clientId){
         return this.clientService.getClientById(clientId);
