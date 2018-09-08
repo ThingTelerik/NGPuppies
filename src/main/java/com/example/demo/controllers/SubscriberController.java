@@ -47,7 +47,7 @@ public class SubscriberController {
      * }
      *
      */
-
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/clients/subscribers")
     public Subscriber createSubscriber(@CurrentLoggedUser CustomUserDetails loggedUser,
                                        @Valid @RequestBody Subscriber subscriber) {
@@ -62,6 +62,7 @@ public class SubscriberController {
      * @return
      * gets all subscribers for the logged user
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/clients/subscribers")
     public Page<Subscriber> getAllSubscriersByCurrentLoggedClient(@CurrentLoggedUser CustomUserDetails loggedUser,Pageable pageable) {
         return this.subscriberService.getAllSubscribersByClientsID(loggedUser.getId(),pageable);
@@ -75,6 +76,7 @@ public class SubscriberController {
      * get subscriber by id for the current logged user
      * returns only the subscribers that belong to the current logged user
      */
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/clients/{subscriberId}")
     public Subscriber getSubscriberByID(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberId") Integer subscriberId){
         return this.subscriberService.getSubscriberByID(loggedUser.getId(), subscriberId);
@@ -98,7 +100,7 @@ public class SubscriberController {
      *     "egn": "777777"
      * }
      */
-
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/clients/subscribers/{subscriberID}")
     public Subscriber updateSubscriber(@CurrentLoggedUser CustomUserDetails loggedUser,
                                        @PathVariable (value = "subscriberID") Integer sID,
@@ -116,9 +118,9 @@ public class SubscriberController {
      * delete subscriber for current logged user
      * deleting subscribers which don't belong to the current user is impossible
      */
-
+    @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/clients/subscribers/{subscriberID}")
-    public ResponseEntity<?> deleteComment(@CurrentLoggedUser CustomUserDetails loggedUser,
+    public ResponseEntity<?> deleteSubscriber(@CurrentLoggedUser CustomUserDetails loggedUser,
                                            @PathVariable (value = "subscriberID") Integer subscriberID) {
 
         return subscriberService.deleteSubscriberByClientID(loggedUser.getId(),subscriberID);
