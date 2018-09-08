@@ -19,8 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClientServiceTests {
@@ -78,8 +77,10 @@ public class ClientServiceTests {
 
     @Test
     public void createBankWithExistingEik_bankIsNull() {
+
         // Data preparation
-        //Mockito.when(mockClientRepository.findByEik("12346")).thenReturn(bank);
+        Mockito.when(mockClientRepository.findByEik("12346")).thenReturn(bank);
+
 
         // Method call
         Client user = clientService.create(bank);
@@ -93,7 +94,7 @@ public class ClientServiceTests {
     @Test
     public void createBankWithExistingUserName_bankShouldBeNull() {
         // Data preparation
-        //Mockito.when(mockClientRepository.findByUsername("bank1")).thenReturn(bank);
+        Mockito.when(mockClientRepository.findByUsername("bank1")).thenReturn(bank);
 
         // Method call
         Client user = clientService.create(bank);
@@ -148,7 +149,10 @@ public class ClientServiceTests {
         Assert.assertThat(userList, Matchers.hasSize(3));
         Mockito.verify(mockClientRepository, Mockito.times(1)).findAll();
         Mockito.verifyNoMoreInteractions(mockClientRepository);
+
     }
+
+
 
 
 }
