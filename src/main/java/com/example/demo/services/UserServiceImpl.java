@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.data.UserRepository;
 import com.example.demo.entities.Client;
+import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.loads.JwtAuthResponse;
 import com.example.demo.model.LoginRequest;
@@ -85,6 +86,7 @@ public class UserServiceImpl implements UserService, GenericService<User, String
     public ResponseEntity<?> authenticateClient(LoginRequest loginRequest) {
 
         User u = userRepository.findUserByUsername(loginRequest.getUsername());
+        String roleToReturn = u.getRole().getRoleType().toString();
 
         UsernamePasswordAuthenticationToken authRequest = null;
         if (u != null) {
@@ -98,7 +100,7 @@ public class UserServiceImpl implements UserService, GenericService<User, String
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthResponse(jwt,roleToReturn));
 
     }
 }
