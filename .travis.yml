@@ -6,20 +6,18 @@ jdk:
 
 services:
   - mysql
-
+dist: trusty
+sudo: required
 addons:
   apt:
-    sources:
-      - mysql-5.8-trusty
     packages:
-      - mysql-server
-
-dist: trusty
-
-sudo: required
-
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
 before_script:
-  - mysql -e 'create database usersdemo;'
+  - mysql -u root -e 'CREATE DATABASE usersdemo;'
+  - mysql -u root -e "CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev';"
+  - mysql -u root -e "GRANT ALL ON usersdemo.* TO 'dev'@'localhost';"
 
 # cache the build tool's caches
 cache:
