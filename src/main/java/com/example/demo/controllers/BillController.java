@@ -140,8 +140,14 @@ public class BillController {
     //http://localhost:8080/api/clients/lastTenBills?bankName=DSK ->works
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/lastTenBills")
-    public List<Bill> TenMostResentPaidBillsForASubscriber(@RequestParam(value = "bankName",required = true) String bankName){
-        return billService.TenMostResentPaidBillsForASubscriber(bankName);
+    public List<Bill> TenMostResentPaidBillsForASubscriber(@CurrentLoggedUser CustomUserDetails loggedUser){
+        return billService.TenMostResentPaidBillsForASubscriber(loggedUser.getUsername());
+    }
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/allpaidbillssort")
+    public List<Bill> AllPaidBillsOrderedDesc(@CurrentLoggedUser CustomUserDetails loggedUser){
+        return billService.TenMostResentPaidBillsForASubscriber(loggedUser.getUsername());
     }
 
 

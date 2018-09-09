@@ -17,4 +17,8 @@ public interface SubscriberRepository extends JpaRepository<Subscriber, Integer>
 
     Subscriber findByBank_IdAndId(Long clientId, Integer subscriberID);
 
+    Subscriber findByPhoneNumber(String phone);
+
+    Boolean existsByPhoneNumber(String phone);
+
 }

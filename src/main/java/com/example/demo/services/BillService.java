@@ -36,7 +36,7 @@ public class BillService implements IBillService {
 
     @Override
     public List<Bill> TenMostResentPaidBillsForASubscriber(String bankName) {
-        return billRepository.TenMostResentPaidBillsForASubscriber(bankName);
+        return billRepository.TenMostResentPaidBills(bankName);
     }
 
     @Override
@@ -145,6 +145,11 @@ public class BillService implements IBillService {
             return this.billRepository.save(newBill);
         }
 
+    }
+
+    @Override
+    public List<Bill> AllPaidBillsOrderedDesc(String bankName) {
+        return billRepository.findAllPaidBillsOrderedDesc(bankName);
     }
 }
 

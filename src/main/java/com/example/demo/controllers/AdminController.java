@@ -75,12 +75,23 @@ public class AdminController {
         }
         return new ResponseEntity<List<User>>(responseUserList, HttpStatus.OK);
     }
+    @GetMapping(value = "/alladmins")
+    public List<Admin> admins(){
+        return adminService.getAll();
+    }
 
     //curl http://localhost:8080/api/auth/admin/deleteClient/{username)
     //needs better implementation maybe
     @DeleteMapping("/deleteClient/{username}")
     public ResponseEntity deleteClient(@PathVariable("username") String username) {
       return   adminService.deleteClient(username);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
+    public void deleteClient(@PathVariable("id") Long postId) {
+        adminService.deleteByID(postId);
+
     }
 
 

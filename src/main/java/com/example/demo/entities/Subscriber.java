@@ -21,6 +21,7 @@ public class Subscriber {
     private int id;
 
     @NotNull
+    @Column( unique = true)
     private String phoneNumber;
 
     //personal details

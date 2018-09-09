@@ -24,4 +24,6 @@ public interface IBillService {
     List<Bill> payAllUnpaidBills(long id, Integer subscriberId);
 
     Bill createPureUnpaidBill(Integer subscriberID, Bill newBill) throws Exception;
+
+    List<Bill> AllPaidBillsOrderedDesc(String bankName);
 }

@@ -5,10 +5,12 @@ import com.example.demo.data.SubscriberRepository;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Subscriber;
 import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.loads.ApiResponse;
 import com.example.demo.services.base.ISubscriberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,10 @@ public class SubscriberService implements ISubscriberService {
     //create subscriber for a given client
     @Override
     public Subscriber createSubscriberByClientId(Long clientID, Subscriber subscriber) {
+        if (subscriberRepository.existsByPhoneNumber(subscriber.getPhoneNumber())) {
+          throw new IllegalArgumentException ( "Phone already in use!");
+        }
+
         return this.clientRepository.findById(clientID).map(client -> {
             subscriber.setBank(client);
             return subscriberRepository.save(subscriber);

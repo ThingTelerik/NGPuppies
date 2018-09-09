@@ -88,6 +88,10 @@ public class AdminServiceImpl implements GenericService<Admin, String>, AdminSer
         adminRepository.delete(entity);
     }
 
+    public  void deleteByID(Long id){
+        adminRepository.deleteById(id);
+    }
+
     @Override
     public Admin update(Admin entity, String param) {
 
