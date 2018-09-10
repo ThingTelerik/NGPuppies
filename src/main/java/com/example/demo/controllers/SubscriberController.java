@@ -77,7 +77,7 @@ public class SubscriberController {
      * returns only the subscribers that belong to the current logged user
      */
     @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/clients/{subscriberId}")
+    @GetMapping("/clients/subscribers/{subscriberId}")
     public Subscriber getSubscriberByID(@CurrentLoggedUser CustomUserDetails loggedUser, @PathVariable(value = "subscriberId") Integer subscriberId){
         return this.subscriberService.getSubscriberByID(loggedUser.getId(), subscriberId);
     }
