@@ -97,6 +97,7 @@ public class BillController {
      * @param newBill
      * @return
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{subscriberId}/bills")
     public Bill createUnpaidBill(@PathVariable(value = "subscriberId") Integer subscriberID,@RequestBody Bill newBill){
         return billService.createUnpaidBill(subscriberID,newBill);
@@ -144,11 +145,7 @@ public class BillController {
         return billService.TenMostResentPaidBillsForASubscriber(loggedUser.getUsername());
     }
 
-    @PreAuthorize("hasRole('CLIENT')")
-    @GetMapping("/allpaidbillssort")
-    public List<Bill> AllPaidBillsOrderedDesc(@CurrentLoggedUser CustomUserDetails loggedUser){
-        return billService.TenMostResentPaidBillsForASubscriber(loggedUser.getUsername());
-    }
+
 
 
 }

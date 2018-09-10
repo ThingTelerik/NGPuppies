@@ -95,7 +95,7 @@ public class BillService implements IBillService {
         }
        return this.billRepository.findBySubscriber_IdAndIdAndPaymentDateIsNull(subscriberId,billId)
                .map(bill->{
-                   bill.setPaymentDate(LocalDate.now(ZoneOffset.UTC));
+                   bill.setPaymentDate(LocalDate.now());
                    return billRepository.save(bill);
                })
                 .orElseThrow(()->new ResourceNotFoundException("No such bill","Bill Id",billId));
@@ -113,7 +113,7 @@ public class BillService implements IBillService {
 
             for (Bill bill: unpaidBills
                  ) {
-                bill.setPaymentDate(LocalDate.now(ZoneOffset.UTC));
+                bill.setPaymentDate(LocalDate.now());
 
                 this.billRepository.save(bill);
                 afterPayment.add(bill);
