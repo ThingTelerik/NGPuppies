@@ -16,12 +16,12 @@ import java.util.Optional;
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
-    @Query(value = "SELECT * FROM bills \n" +
-            "JOIN subscribers ON bills.subscriber_id= subscribers.id\n" +
+    @Query(value = "SELECT * FROM bill \n" +
+            "JOIN subscribers ON bill.subscriber_id= subscribers.id\n" +
             "JOIN users ON users.id = subscribers.bank_id\n" +
             "WHERE users.username = ?1\n" +
-            "AND bills.payment_date IS NOT NULL\n" +
-            "ORDER BY bills.payment_date DESC\n" +
+            "AND bill.payment_date IS NOT NULL\n" +
+            "ORDER BY bill.payment_date DESC\n" +
             "LIMIT 10;", nativeQuery = true)
     List<Bill> TenMostResentPaidBills(String BankName);
 
@@ -35,11 +35,11 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
 
     Optional<Bill> findBySubscriber_IdAndIdAndPaymentDateIsNull(Integer subscriberId,Long billId);
 
-    @Query(value = "SELECT * FROM bills \n" +
-            "JOIN subscribers ON bills.subscriber_id= subscribers.id\n" +
+    @Query(value = "SELECT * FROM bill \n" +
+            "JOIN subscribers ON bill.subscriber_id= subscribers.id\n" +
             "JOIN users ON users.id = subscribers.bank_id\n" +
             "WHERE users.username = ?1\n" +
-            "AND bills.payment_date IS NOT NULL\n" +
-            "ORDER BY bills.payment_date DESC\n" , nativeQuery = true)
+            "AND bill.payment_date IS NOT NULL\n" +
+            "ORDER BY bill.payment_date DESC\n" , nativeQuery = true)
     List<Bill> findAllPaidBillsOrderedDesc(String BankName);
 }

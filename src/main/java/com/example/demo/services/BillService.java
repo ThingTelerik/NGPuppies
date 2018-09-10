@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +95,7 @@ public class BillService implements IBillService {
         }
        return this.billRepository.findBySubscriber_IdAndIdAndPaymentDateIsNull(subscriberId,billId)
                .map(bill->{
-                   bill.setPaymentDate(LocalDate.now());
+                   bill.setPaymentDate(LocalDate.now(ZoneOffset.UTC));
                    return billRepository.save(bill);
                })
                 .orElseThrow(()->new ResourceNotFoundException("No such bill","Bill Id",billId));
@@ -112,7 +113,7 @@ public class BillService implements IBillService {
 
             for (Bill bill: unpaidBills
                  ) {
-                bill.setPaymentDate(LocalDate.now());
+                bill.setPaymentDate(LocalDate.now(ZoneOffset.UTC));
 
                 this.billRepository.save(bill);
                 afterPayment.add(bill);
